@@ -64,6 +64,7 @@ use Cake\Utility\Security;
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('app', 'default', false);
+    Configure::load('doko', 'default', false);
 } catch (\Exception $e) {
     die($e->getMessage() . "\n");
 }
@@ -179,12 +180,22 @@ Request::addDetector('tablet', function ($request) {
  *
  */
 
-Plugin::load('Migrations');
-
-// Only try to load DebugKit in development mode
-// Debug Kit should not be installed on a production system
+/**
+ * Load Plugins
+ */
+$plugins_list = 'Migrations,' . Configure::read('Doko.plugins');
 if (Configure::read('debug')) {
-    Plugin::load('DebugKit', ['bootstrap' => true]);
+    $plugins_list = 'DebugKit,' . $plugins_list;
+}
+$plugins = explode(',', $plugins_list);
+
+foreach ($plugins as $plugin) {
+    Plugin::load($plugin, [
+        'autoload' => true,
+        'bootstrap' => true,
+        'routes' => true,
+        'ignoreMissing' => true,
+    ]);
 }
 
 /**
@@ -193,3 +204,5 @@ if (Configure::read('debug')) {
 DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
+
+Plugin::load('Users', ['bootstrap' => false, 'routes' => true]);

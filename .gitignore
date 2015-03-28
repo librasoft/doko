@@ -1,7 +1,8 @@
-/vendor/*
 /config/app.php
-/tmp/*
+/config/doko.php
 /logs/*
+/tmp/*
+/vendor/*
 
 composer.lock
 /nbproject/*
