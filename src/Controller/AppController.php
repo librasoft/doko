@@ -36,6 +36,32 @@ class AppController extends Controller
      */
     public function initialize()
     {
+//		if (!$this->theme) {
+//			$this->theme = Configure::read('Frontend.theme');
+//		}
+//
+//		$this->_loadTheme();
+
+		$this->loadComponent('Csrf');
+		$this->loadComponent('Security');
         $this->loadComponent('Flash');
+		$this->loadComponent('RequestHandler');
+		$this->dispatchEvent('Controller.hookComponents');
     }
+
+	/**
+	 * Loads the chosen theme.
+	 */
+//	protected function _loadTheme() {
+//		if (!$this->theme) {
+//			return;
+//		}
+//
+//		Plugin::load($this->theme . 'Theme', [
+//			'bootstrap' => true,
+//			'ignoreMissing' => true,
+//		]);
+//
+//		$this->theme = $this->theme . 'Theme';
+//	}
 }

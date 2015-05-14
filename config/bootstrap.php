@@ -183,7 +183,7 @@ Request::addDetector('tablet', function ($request) {
 /**
  * Load Plugins
  */
-$plugins_list = 'Migrations,' . Configure::read('Doko.plugins');
+$plugins_list = 'Migrations,Crud,' . Configure::read('Doko.plugins');
 if (Configure::read('debug')) {
     $plugins_list = 'DebugKit,' . $plugins_list;
 }
