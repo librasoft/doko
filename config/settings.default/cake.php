@@ -37,7 +37,7 @@ return [
             'host' => 'localhost',
             'username' => 'root',
             'password' => '',
-            'database' => 'cake3_doko',
+            'database' => 'newdoko',
 
             /**
              * CakePHP will use the default DB port based on the driver selected
@@ -68,7 +68,7 @@ return [
              * mysql configuration directive 'innodb_stats_on_metadata = 0'
              * which is the recommended value in production environments
              */
-            'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
+            //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
         ],
 
         /**

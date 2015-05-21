@@ -40,7 +40,6 @@ if (!extension_loaded('intl')) {
 
 use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
-use Cake\Core\App;
 use Cake\Core\Configure;
 use Cake\Core\Configure\Engine\PhpConfig;
 use Cake\Core\Plugin;
@@ -50,7 +49,7 @@ use Cake\Log\Log;
 use Cake\Network\Email\Email;
 use Cake\Network\Request;
 use Cake\Routing\DispatcherFactory;
-use Cake\Utility\Inflector;
+use Cake\Utility\Hash;
 use Cake\Utility\Security;
 
 /**
@@ -63,23 +62,17 @@ use Cake\Utility\Security;
  */
 try {
     Configure::config('default', new PhpConfig());
-    Configure::load('app', 'default', false);
-    Configure::load('doko', 'default', false);
+    Configure::load('settings/cake', 'default', false);
+    Configure::load('settings/doko', 'default', false);
 } catch (\Exception $e) {
     die($e->getMessage() . "\n");
 }
 
-// Load an environment local configuration file.
-// You can use a file like app_local.php to provide local overrides to your
-// shared configuration.
-//Configure::load('app_local', 'default');
+//TODO: set current languages
+Configure::write('Language.crud', 'en');
 
-// When debug = false the metadata cache should last
-// for a very very long time, as we don't want
-// to refresh the cache while users are doing requests.
-if (!Configure::read('debug')) {
-    Configure::write('Cache._cake_model_.duration', '+1 years');
-    Configure::write('Cache._cake_core_.duration', '+1 years');
+if (Configure::read('Doko.i18n.' . Configure::read('Language.crud'))) {
+    Configure::write('Doko', Hash::merge(Configure::read('Doko'), Configure::read('Doko.i18n.' . Configure::read('Language.crud'))));
 }
 
 /**
@@ -99,19 +92,23 @@ mb_internal_encoding(Configure::read('App.encoding'));
  */
 ini_set('intl.default_locale', 'en_US');
 
+// When debug = false the metadata cache should last
+// for a very very long time, as we don't want
+// to refresh the cache while users are doing requests.
+if (!Configure::read('debug')) {
+    Configure::write('Cache._cake_model_.duration', '+1 years');
+    Configure::write('Cache._cake_core_.duration', '+1 years');
+}
+
 /**
  * Register application error and exception handlers.
  */
 $isCli = php_sapi_name() === 'cli';
 if ($isCli) {
     (new ConsoleErrorHandler(Configure::read('Error')))->register();
+    require __DIR__ . '/bootstrap_cli.php';
 } else {
     (new ErrorHandler(Configure::read('Error')))->register();
-}
-
-// Include the CLI bootstrap overrides.
-if ($isCli) {
-    require __DIR__ . '/bootstrap_cli.php';
 }
 
 /**
@@ -121,16 +118,20 @@ if ($isCli) {
  * If you define fullBaseUrl in your config file you can remove this.
  */
 if (!Configure::read('App.fullBaseUrl')) {
-    $s = null;
-    if (env('HTTPS')) {
-        $s = 's';
-    }
+    if (Configure::read('Doko.Frontend.url_base')) {
+        Configure::write('App.fullBaseUrl', Configure::read('Doko.Frontend.url_base'));
+    } else {
+        $s = null;
+        if (env('HTTPS')) {
+            $s = 's';
+        }
 
-    $httpHost = env('HTTP_HOST');
-    if (isset($httpHost)) {
-        Configure::write('App.fullBaseUrl', 'http' . $s . '://' . $httpHost);
+        $httpHost = env('HTTP_HOST');
+        if (isset($httpHost)) {
+            Configure::write('App.fullBaseUrl', 'http' . $s . '://' . $httpHost);
+        }
+        unset($httpHost, $s);
     }
-    unset($httpHost, $s);
 }
 
 Cache::config(Configure::consume('Cache'));
@@ -139,13 +140,6 @@ Email::configTransport(Configure::consume('EmailTransport'));
 Email::config(Configure::consume('Email'));
 Log::config(Configure::consume('Log'));
 Security::salt(Configure::consume('Security.salt'));
-
-/**
- * The default crypto extension in 3.0 is OpenSSL.
- * If you are migrating from 2.x uncomment this code to
- * use a more compatible Mcrypt based implementation
- */
-// Security::engine(new \Cake\Utility\Crypto\Mcrypt());
 
 /**
  * Setup detectors for mobile and tablet.
@@ -160,34 +154,12 @@ Request::addDetector('tablet', function ($request) {
 });
 
 /**
- * Custom Inflector rules, can be set to correctly pluralize or singularize
- * table, model, controller names or whatever other string is passed to the
- * inflection functions.
- *
- * Inflector::rules('plural', ['/^(inflect)or$/i' => '\1ables']);
- * Inflector::rules('irregular' => ['red' => 'redlings']);
- * Inflector::rules('uninflected', ['dontinflectme']);
- * Inflector::rules('transliteration', ['/å/' => 'aa']);
- */
-
-/**
- * Plugins need to be loaded manually, you can either load them one by one or all of them in a single call
- * Uncomment one of the lines below, as you need. make sure you read the documentation on Plugin to use more
- * advanced ways of loading plugins
- *
- * Plugin::loadAll(); // Loads all plugins at once
- * Plugin::load('Migrations'); //Loads a single plugin named Migrations
- *
- */
-
-/**
  * Load Plugins
  */
-$plugins_list = 'Migrations,Crud,' . Configure::read('Doko.plugins');
-if (Configure::read('debug')) {
-    $plugins_list = 'DebugKit,' . $plugins_list;
-}
-$plugins = explode(',', $plugins_list);
+$plugins = array_merge([
+    'Migrations',
+    'Crud',
+], Configure::read('Doko.Plugins'));
 
 foreach ($plugins as $plugin) {
     Plugin::load($plugin, [
@@ -204,5 +176,3 @@ foreach ($plugins as $plugin) {
 DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
-
-Plugin::load('Users', ['bootstrap' => false, 'routes' => true]);

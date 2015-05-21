@@ -18,12 +18,12 @@ class User extends Entity
         'status' => true,
         'role' => true,
         'email' => true,
-        'password' => true,
         'name' => true,
         'description' => true,
         'language' => true,
         'timezone' => true,
+        'password' => true,
         'security_token' => true,
-        'password_updated' => true,
     ];
+
 }

@@ -1,5 +1,4 @@
-/config/app.php
-/config/doko.php
+/config/settings/*
 /logs/*
 /tmp/*
 /vendor/*
