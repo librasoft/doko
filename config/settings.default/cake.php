@@ -128,10 +128,7 @@ return [
         'cssBaseUrl' => 'css/',
         'jsBaseUrl' => 'js/',
         'paths' => [
-            'plugins' => [
-                ROOT . DS . 'plugins' . DS,
-                ROOT . DS . 'themes' . DS,
-            ],
+            'plugins' => [ROOT . DS . 'plugins' . DS],
             'templates' => [APP . 'Template' . DS],
             'locales' => [APP . 'Locale' . DS],
         ],

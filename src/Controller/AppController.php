@@ -15,6 +15,8 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
+use Cake\Core\Plugin;
 
 /**
  * Application Controller
@@ -36,11 +38,9 @@ class AppController extends Controller
      */
     public function initialize()
     {
-//		if (!$this->theme) {
-//			$this->theme = Configure::read('Frontend.theme');
-//		}
-//
-//		$this->_loadTheme();
+		if (!$this->theme) {
+            $this->loadTheme(Configure::read('Doko.Frontend.theme'));
+		}
 
 		$this->loadComponent('Csrf');
 		$this->loadComponent('Security');
@@ -52,16 +52,17 @@ class AppController extends Controller
 	/**
 	 * Loads the chosen theme.
 	 */
-//	protected function _loadTheme() {
-//		if (!$this->theme) {
-//			return;
-//		}
-//
-//		Plugin::load($this->theme . 'Theme', [
-//			'bootstrap' => true,
-//			'ignoreMissing' => true,
-//		]);
-//
-//		$this->theme = $this->theme . 'Theme';
-//	}
+	public function loadTheme($theme) {
+        if ($this->theme === $theme) {
+            return;
+        }
+
+		Plugin::load($theme, [
+            'path' => ROOT . DS . 'themes' . DS,
+			'bootstrap' => true,
+			'ignoreMissing' => true,
+		]);
+		$this->theme = $theme;
+	}
+
 }

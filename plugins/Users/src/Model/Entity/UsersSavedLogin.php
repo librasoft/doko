@@ -1,12 +1,14 @@
 <?php
+
 namespace Users\Model\Entity;
 
+use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Entity;
 
 /**
- * UsersLogin Entity.
+ * UsersSavedLogin Entity.
  */
-class UsersLogin extends Entity
+class UsersSavedLogin extends Entity
 {
 
     /**
@@ -20,4 +22,10 @@ class UsersLogin extends Entity
         'user_agent' => true,
         'user' => true,
     ];
+
+    protected function _setToken($token)
+    {
+        return (new DefaultPasswordHasher)->hash($token);
+    }
+
 }

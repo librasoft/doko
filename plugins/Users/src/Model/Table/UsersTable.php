@@ -1,7 +1,9 @@
 <?php
+
 namespace Users\Model\Table;
 
-use Cake\ORM\Query;
+use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -12,6 +14,13 @@ use Users\Model\Entity\User;
  */
 class UsersTable extends Table
 {
+
+    public function implementedEvents()
+    {
+        return [
+            'Model.beforeSave' => 'beforeSave',
+        ];
+    }
 
     /**
      * Initialize method
@@ -27,50 +36,37 @@ class UsersTable extends Table
         $this->addBehavior('Timestamp');
     }
 
-    public function implementedEvents()
-    {
-        return [
-            'Model.beforeSave' => 'beforeSave',
-        ];
-    }
-
     /**
      * Default validation rules.
      *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
+     * @param Validator $validator
+     * @return Validator
      */
     public function validationDefault(Validator $validator)
     {
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
             ->allowEmpty('id', 'create')
-            ->add('status', 'valid', ['rule' => 'numeric'])
-            ->requirePresence('status', 'create')
-            ->notEmpty('status')
-            ->requirePresence('role', 'create')
-            ->notEmpty('role')
             ->add('role', [
                 'valid' => [
                     'rule' => function ($value, $context) {
                         if (!Configure::read('ACL')) {
                             Configure::load('acl', 'default', false);
                         }
-                        return empty($value) || Configure::check('ACL.roles.' . $value);
+                        return empty($value) || Configure::check('ACL.Roles.' . $value);
                     },
                 ],
             ])
+            ->add('status', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('status')
             ->add('email', 'valid', ['rule' => 'email'])
             ->requirePresence('email', 'create')
             ->notEmpty('email')
             ->requirePresence('password', 'create')
             ->notEmpty('password')
+            ->allowEmpty('password', 'update')
             ->requirePresence('name', 'create')
-            ->notEmpty('name')
-            ->requirePresence('language', 'create')
-            ->notEmpty('language')
-            ->requirePresence('timezone', 'create')
-            ->notEmpty('timezone');
+            ->notEmpty('name');
 
         return $validator;
     }
@@ -92,7 +88,7 @@ class UsersTable extends Table
     {
         if ($entity->isNew()) {
             if (!$entity->has('role')) {
-                $entity->role = Configure::read('ACL.default-role');
+                $entity->role = Configure::read('ACL.Defaults.register');
             }
         }
 
@@ -100,4 +96,5 @@ class UsersTable extends Table
             $entity->unsetProperty('password');
         }
     }
+
 }

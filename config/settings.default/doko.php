@@ -1,6 +1,7 @@
 <?php
-return [
+$doko = [
     'Plugins' => [
+//        'DebugKit',
         'Users',
     ],
     'Frontend' => [
@@ -40,7 +41,11 @@ return [
             'it',
         ],
     ],
+    'Profile' => [
+        'theme' => 'DokoProfile',
+    ],
     'i18n' => [
+        'default-timezone' => 'Europe/Rome',
         'en' => [
             'Frontend' => [
                 'title' => 'Doko CMS ENG',
@@ -49,4 +54,8 @@ return [
             ],
         ],
     ],
+];
+
+return [
+    'Doko' => $doko,
 ];

@@ -63,38 +63,12 @@ use Cake\Utility\Security;
 try {
     Configure::config('default', new PhpConfig());
     Configure::load('settings/cake', 'default', false);
+    mb_internal_encoding(Configure::read('App.encoding'));
     Configure::load('settings/doko', 'default', false);
 } catch (\Exception $e) {
     die($e->getMessage() . "\n");
 }
 
-//TODO: set current languages
-Configure::write('Language.crud', 'en');
-
-if (Configure::read('Doko.i18n.' . Configure::read('Language.crud'))) {
-    Configure::write('Doko', Hash::merge(Configure::read('Doko'), Configure::read('Doko.i18n.' . Configure::read('Language.crud'))));
-}
-
-/**
- * Set server timezone to UTC. You can change it to another timezone of your
- * choice but using UTC makes time calculations / conversions easier.
- */
-date_default_timezone_set('UTC');
-
-/**
- * Configure the mbstring extension to use the correct encoding.
- */
-mb_internal_encoding(Configure::read('App.encoding'));
-
-/**
- * Set the default locale. This controls how dates, number and currency is
- * formatted and sets the default language to use for translations.
- */
-ini_set('intl.default_locale', 'en_US');
-
-// When debug = false the metadata cache should last
-// for a very very long time, as we don't want
-// to refresh the cache while users are doing requests.
 if (!Configure::read('debug')) {
     Configure::write('Cache._cake_model_.duration', '+1 years');
     Configure::write('Cache._cake_core_.duration', '+1 years');
@@ -111,6 +85,29 @@ if ($isCli) {
     (new ErrorHandler(Configure::read('Error')))->register();
 }
 
+Cache::config(Configure::consume('Cache'));
+ConnectionManager::config(Configure::consume('Datasources'));
+Log::config(Configure::consume('Log'));
+Security::salt(Configure::consume('Security.salt'));
+
+//TODO: get current languages
+$current_language = 'en';
+ini_set('intl.default_locale', $current_language);
+date_default_timezone_set(Configure::read('Doko.i18n.default-timezone'));
+
+if (Configure::read('Doko.i18n.' . $current_language)) {
+    Configure::write('Doko', Hash::merge(Configure::read('Doko'), Configure::read('Doko.i18n.' . $current_language)));
+}
+
+if (Configure::read('Doko.Owner.email')) {
+    Configure::write('Email.default.from', [
+        Configure::read('Doko.Owner.email') => Configure::read('Doko.Frontend.title'),
+    ]);
+}
+
+Email::configTransport(Configure::consume('EmailTransport'));
+Email::config(Configure::consume('Email'));
+
 /**
  * Set the full base URL.
  * This URL is used as the base of all absolute links.
@@ -121,25 +118,13 @@ if (!Configure::read('App.fullBaseUrl')) {
     if (Configure::read('Doko.Frontend.url_base')) {
         Configure::write('App.fullBaseUrl', Configure::read('Doko.Frontend.url_base'));
     } else {
-        $s = null;
-        if (env('HTTPS')) {
-            $s = 's';
-        }
-
         $httpHost = env('HTTP_HOST');
-        if (isset($httpHost)) {
-            Configure::write('App.fullBaseUrl', 'http' . $s . '://' . $httpHost);
+        if ($httpHost) {
+            Configure::write('App.fullBaseUrl', 'http' . (env('HTTPS') ? 's' : null) . '://' . $httpHost);
         }
-        unset($httpHost, $s);
+        unset($httpHost);
     }
 }
-
-Cache::config(Configure::consume('Cache'));
-ConnectionManager::config(Configure::consume('Datasources'));
-Email::configTransport(Configure::consume('EmailTransport'));
-Email::config(Configure::consume('Email'));
-Log::config(Configure::consume('Log'));
-Security::salt(Configure::consume('Security.salt'));
 
 /**
  * Setup detectors for mobile and tablet.

@@ -3,28 +3,28 @@
 namespace Users\Controller;
 
 use Cake\Auth\DefaultPasswordHasher;
-use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\I18n\I18n;
 use Cake\Network\Email\Email;
 use Cake\Network\Exception\BadRequestException;
-use Cake\Network\Exception\NotFoundException;
+use Crud\Controller\ControllerTrait;
 use Users\Controller\AppController;
 use Users\Model\Entity\User;
+use Users\Model\Table\UsersTable;
 
 /**
  * Users Controller
  *
- * @property \Users\Model\Table\UsersTable $Users
+ * @property UsersTable $Users
  */
 class UsersController extends AppController
 {
 
-    use \Crud\Controller\ControllerTrait;
+    use ControllerTrait;
 
     public function initialize()
     {
-//		$this->theme = 'Users';
+        $this->loadTheme(Configure::read('Doko.Profile.theme'));
 
         parent::initialize();
 
@@ -32,9 +32,6 @@ class UsersController extends AppController
             'listeners' => [
                 'Crud.Api',
                 'Crud.ApiPagination',
-                'Crud.ApiQueryLog',
-                'Crud.Redirect',
-                'Crud.RelatedModels',
             ],
         ]);
     }
@@ -58,8 +55,14 @@ class UsersController extends AppController
 
     public function login()
     {
-        if ($this->Auth->user()) {
-            throw new NotFoundException();
+        $is_ajax = $this->request->is('ajax');
+        if ($is_ajax && !$this->request->is('post')) {
+            $this->set('response', __d('Users', 'Invalid request'));
+            $this->set('_serialize', 'response');
+            return;
+        }
+        if (!$is_ajax && $this->Auth->user()) {
+            return $this->redirect($this->referer($this->Auth->config('loginRedirect')));
         }
         if ($this->request->is('post')) {
             $event_before = $this->dispatchEvent('Controller.userLoginBefore');
@@ -72,17 +75,15 @@ class UsersController extends AppController
             $user = $this->Auth->identify();
 
             if ($user) {
-                if ($user['status'] === 0) {
+                if ($user['row_status'] === 0) {
                     $this->dispatchEvent('Controller.userLoginFailure');
-                    $this->Flash->error(__d('Users', 'Prima di effettuare il login devi convalidare la tua email. Controlla la tua casella di posta.'));
+                    $this->Flash->error(__d('Users', 'Validate your email address before you can login. Check your inbox.'));
 
                     $entity = new User($user);
                     $this->security_token = $entity->generateToken();
                     $this->Users->save($entity);
                     $email = new Email('default');
                     $email
-                        ->sender([Configure::read('Owner.email') => Configure::read('Frontend.title')])
-                        ->from([Configure::read('Owner.email') => Configure::read('Frontend.title')])
                         ->to($entity->email)
                         ->subject(__d('Users', 'Confirm email address'))
                         ->template('Users.register')
@@ -109,10 +110,20 @@ class UsersController extends AppController
                     $this->Users->save($user);
                 }
 
+                if ($this->request->is('ajax')) {
+                    $this->set('response', $this->Auth->user());
+                    $this->set('_serialize', 'response');
+                    return;
+                }
                 return $this->redirect($this->Auth->redirectUrl());
             }
 
             $this->dispatchEvent('Controller.userLoginFailure');
+            if ($this->request->is('ajax')) {
+                $this->set('response', __d('Users', 'Invalid email or password, try again'));
+                $this->set('_serialize', 'response');
+                return;
+            }
             $this->Flash->error(__d('Users', 'Invalid email or password, try again'));
         }
     }
@@ -129,7 +140,7 @@ class UsersController extends AppController
     public function forgot()
     {
         if ($this->Auth->user()) {
-            throw new NotFoundException();
+            return $this->redirect($this->referer($this->Auth->config('loginRedirect')));
         }
         if ($this->request->is('post')) {
             list(, $modelClass) = pluginSplit($this->modelClass);
@@ -150,8 +161,6 @@ class UsersController extends AppController
             if ($this->{$modelClass}->save($item)) {
                 $email = new Email('default');
                 $email
-                    ->sender([Configure::read('Owner.email') => Configure::read('Frontend.title')])
-                    ->from([Configure::read('Owner.email') => Configure::read('Frontend.title')])
                     ->to($item->email)
                     ->subject(__d('Users', 'Password recovery'))
                     ->template('Users.forgot')
@@ -170,7 +179,7 @@ class UsersController extends AppController
     public function reset($id, $token)
     {
         if ($this->Auth->user()) {
-            throw new NotFoundException();
+            return $this->redirect($this->referer($this->Auth->config('loginRedirect')));
         }
 
         list(, $modelClass) = pluginSplit($this->modelClass);
@@ -181,9 +190,7 @@ class UsersController extends AppController
             throw new BadRequestException();
         }
 
-        if ($this->request->is(['patch',
-                'post',
-                'put'])) {
+		if ($this->request->is(['patch', 'post', 'put'])) {
             $item->password = $this->request->data['password'];
 
             if ($this->{$modelClass}->save($item)) {
@@ -221,7 +228,7 @@ class UsersController extends AppController
     public function register()
     {
         if ($this->Auth->user()) {
-            throw new NotFoundException();
+            return $this->redirect($this->referer($this->Auth->config('loginRedirect')));
         }
 
         return $this->Crud->execute();
@@ -229,6 +236,10 @@ class UsersController extends AppController
 
     public function confirm($id, $token, $save_login = 0)
     {
+        if ($this->Auth->user()) {
+            return $this->redirect($this->referer($this->Auth->config('loginRedirect')));
+        }
+
         list(, $modelClass) = pluginSplit($this->modelClass);
 
         $item = $this->{$modelClass}->get($id);
@@ -241,7 +252,7 @@ class UsersController extends AppController
         $item->security_token = '';
 
         if (!$this->{$modelClass}->save($item)) {
-            $this->Flash->success(__d('Users', 'An error occurred.'));
+            $this->Flash->error(__d('Users', 'An error occurred.'));
             return $this->redirect($this->Auth->config('loginAction'));
         }
 
@@ -332,8 +343,8 @@ class UsersController extends AppController
             if (empty($this->request->data['timezone'])) {
                 $this->request->data['timezone'] = date_default_timezone_get();
             }
-            if (empty($this->request->data['language_frontend'])) {
-                $this->request->data['language_frontend'] = ini_get('intl.default_locale');
+            if (empty($this->request->data['language'])) {
+                $this->request->data['language'] = ini_get('intl.default_locale');
             }
         }
     }
@@ -341,13 +352,12 @@ class UsersController extends AppController
     public function _crud_beforeSave(Event $event)
     {
         if (
-            !$event->subject()->entity->isNew() && ($event->subject()->entity->dirty('email') || $this->request->data('password'))
+            !$event->subject()->entity->isNew()
+            && ($event->subject()->entity->dirty('email') || $this->request->data('password'))
         ) {
-            $this->ACL->checkPermission('Users.ChangeOwnLogin');
+            $this->ACL->checkPermission('Users.Profile.ChangeCredentials');
         }
-        if (
-            $event->subject()->entity->isNew() || $event->subject()->entity->dirty('email')
-        ) {
+        if ($event->subject()->entity->isNew() || $event->subject()->entity->dirty('email')) {
             $event->subject()->entity->status = 0;
             $this->security_token = $event->subject()->entity->generateToken();
         }
@@ -356,14 +366,12 @@ class UsersController extends AppController
     public function _crud_afterSave(Event $event)
     {
         if ($event->subject()->success && $this->security_token) {
-            if ($event->subject()->entity->language_frontend !== ini_get('intl.default_locale')) {
-                I18n::locale($event->subject()->entity->language_frontend);
+            if ($event->subject()->entity->language !== ini_get('intl.default_locale')) {
+                I18n::locale($event->subject()->entity->language);
             }
 
             $email = new Email('default');
             $email
-                ->sender([Configure::read('Owner.email') => Configure::read('Frontend.title')])
-                ->from([Configure::read('Owner.email') => Configure::read('Frontend.title')])
                 ->to($event->subject()->entity->email)
                 ->subject(__d('Users', 'Confirm email address'))
                 ->template('Users.register')
@@ -379,7 +387,7 @@ class UsersController extends AppController
             $user = $event->subject()->entity->toArray();
 
             if ($this->security_token) {
-                $user['session_restored'] = true;
+                $user['login_restored'] = true;
             }
 
             $this->Auth->setUser($user);

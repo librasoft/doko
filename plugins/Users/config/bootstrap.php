@@ -9,30 +9,14 @@ EventManager::instance()->on('Controller.hookComponents', function (Event $event
 	$event->subject()->loadComponent('Auth', [
 		'authenticate' => [
 			'all' => [
-				'fields' => [
-                    'username' => 'email',
-                ],
+				'fields' => ['username' => 'email'],
 			],
 			'Form',
 		],
-		'flash' => [
-            'element' => 'default',
-            'key' => 'auth',
-            'params' => [
-                'class' => 'error',
-            ],
-        ],
-		'loginAction' => [
-            'plugin' => 'Users',
-            'controller' => 'Users',
-            'action' => 'login',
-        ],
+		'flash' => ['element' => 'default', 'key' => 'auth', 'params' => ['class' => 'error']],
+		'loginAction' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login'],
 		'loginRedirect' => '/',
-		'logoutRedirect' => [
-            'plugin' => 'Users',
-            'controller' => 'Users',
-            'action' => 'login',
-        ],
+		'logoutRedirect' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login'],
 	]);
 	$event->subject()->loadComponent('Users.Login');
 	$event->subject()->loadComponent('Users.ACL');
@@ -44,31 +28,12 @@ EventManager::instance()->on('Controller.hookComponents', function (Event $event
 });
 
 Router::scope('/', function($routes) {
-	$routes->connect('/login', [
-        'plugin' => 'Users',
-        'controller' => 'Users',
-        'action' => 'login',
-    ]);
-	$routes->connect('/logout', [
-        'plugin' => 'Users',
-        'controller' => 'Users',
-        'action' => 'logout',
-    ]);
-	$routes->connect('/forgot-password', [
-        'plugin' => 'Users',
-        'controller' => 'Users',
-        'action' => 'forgot',
-    ]);
-	$routes->connect('/reset-password/*', [
-        'plugin' => 'Users',
-        'controller' => 'Users',
-        'action' => 'reset',
-    ]);
-	$routes->connect('/clear-logins', [
-        'plugin' => 'Users',
-        'controller' => 'Users',
-        'action' => 'clear_logins',
-    ]);
+    $routes->extensions(['json']);
+	$routes->connect('/login', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login']);
+	$routes->connect('/logout', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'logout']);
+	$routes->connect('/forgot-password', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'forgot']);
+	$routes->connect('/reset-password/*', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'reset']);
+	$routes->connect('/clear-logins', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'clear_logins']);
 });
 
 Cache::config('throttling', [
