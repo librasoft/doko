@@ -1,0 +1,59 @@
+// TEXT
+// --------------------------------------------------
+.new-font(@font-name, @font-file, @font-version: 1.0) {
+	@font-face {
+		font-family: "@{font-name}";
+		src: url('../font/@{font-file}.eot?v=@{font-version}'); /* IE9 Compat Modes */
+		src: url('../font/@{font-file}.eot?#iefix-@{font-version}') format('embedded-opentype'), /* IE6-IE8 */
+			 /*url('../font/@{font-file}.woff2?v=@{font-version}') format('woff2'),  Super Modern Browsers */
+			 url('../font/@{font-file}.woff?v=@{font-version}') format('woff'), /* Pretty Modern Browsers */
+			 url('../font/@{font-file}.ttf?v=@{font-version}')  format('truetype'), /* Safari, Android, iOS */
+			 url('../font/@{font-file}.svg?v=@{font-version}#@{font-name}') format('svg'); /* Legacy iOS */
+		font-weight: normal;
+		font-style: normal;
+	}
+}
+// ICONS
+// --------------------------------------------------
+.icons-box(@size: 1em) {
+	height: @size;
+	line-height: @size;
+	text-align: center;
+	width: @size;
+}
+.icons-block(@margin: 0) {
+	display: block;
+	line-height: 1;
+	margin: @margin auto;
+	text-align: center;
+}
+.icons-prepend(@icon-size: 1em) {
+	display: inline-block;
+	margin-right: @icon-size / 2;
+}
+.icons-append(@icon-size: 1em) {
+	display: inline-block;
+	margin-left: @icon-size / 2;
+}
+.icons-replace-text(@width) {
+	display: inline-block;
+	line-height: 1;
+	overflow: hidden;
+	text-align: center;
+	white-space: nowrap;
+	width: @width;
+
+	&:before {
+		.icon();
+		display: inline-block;
+		width: @width;
+	}
+}
+// VENDOR PREFIXES
+// --------------------------------------------------
+.transform(@transform) {
+  -webkit-transform: @transform;
+      -ms-transform: @transform; // IE9 only
+       -o-transform: @transform;
+          transform: @transform;
+}

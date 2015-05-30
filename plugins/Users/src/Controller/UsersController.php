@@ -3,6 +3,7 @@
 namespace Users\Controller;
 
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\I18n\I18n;
 use Cake\Network\Email\Email;

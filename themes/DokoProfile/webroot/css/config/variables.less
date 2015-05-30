@@ -1,0 +1,53 @@
+@body-bg:					#ffffff;
+@hr-border:                 @gray-lighter;
+
+@brand-primary:				#3498db;
+@brand-primary-accent:		lighten(@brand-primary, 10%);
+@brand-secondary:			#db3498;
+@brand-secondary-accent:	darken(@brand-secondary, 10%);
+
+@link-hover-color:			@brand-primary-accent;
+
+@btn-default-color:              #333;
+@btn-default-bg:                 #fff;
+@btn-default-border:             #ccc;
+
+@btn-primary-color:              #fff;
+@btn-primary-bg:                 @brand-primary;
+@btn-primary-border:             darken(@btn-primary-bg, 5%);
+
+@brand-facebook:	#3b5997;
+@brand-twitter:		#41b7d8;
+@brand-google:		#d64937;
+@brand-linkedin:	#0073b2;
+
+@golden-ratio-constant:		1.6180339887498948482;
+@golden-ratio-percent:		1% / @golden-ratio-constant * 100;
+
+@font-size-base:          16px;
+@font-size-large:         ceil((@font-size-base * 1.25)); // ~18px
+@font-size-small:         ceil((@font-size-base * 0.85)); // ~12px
+
+@font-size-h1:            2.6em;
+@font-size-h2:            2.15em;
+@font-size-h3:            1.7em;
+@font-size-h4:            1.25em;
+@font-size-h5:            1em;
+@font-size-h6:            0.85em;
+
+//** Unit-less `line-height` for use in components like buttons.
+@line-height-base:        1.5;
+//** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
+@line-height-computed:    floor((@font-size-base * @line-height-base));
+
+//** Default `.form-control` border radius
+@input-border-radius:            2px;
+
+@nav-tabs-border-color:						@hr-border;
+@nav-tabs-active-link-hover-border-color:	@hr-border;
+
+//** Blockquote font size
+@blockquote-font-size:        @font-size-large;
+
+//** Horizontal offset for forms and lists.
+@component-offset-horizontal: 180px;

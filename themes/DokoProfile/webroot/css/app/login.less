@@ -1,0 +1,29 @@
+.doko-a-login,
+.doko-a-forgot,
+.doko-a-reset-password,
+.doko-a-register {
+	.main-title {
+		.sr-only();
+	}
+	@media (min-width: 350px) {
+		.main {
+			border-left: 1px solid @hr-border;
+			border-right: 1px solid @hr-border;
+			margin: 0 auto;
+			width: 350px;
+		}
+	}
+}
+.user-login,
+.user-register {
+	.container();
+
+	@media (min-width: 350px) {
+		width: 350px;
+	}
+}
+.user-login {
+	label i {
+		display: none;
+	}
+}

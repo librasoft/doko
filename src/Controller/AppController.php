@@ -57,9 +57,11 @@ class AppController extends Controller
             return;
         }
 
-		Plugin::load($theme, [
+        Plugin::load($theme, [
+            'autoload' => true,
             'path' => ROOT . DS . 'themes' . DS,
 			'bootstrap' => true,
+			'routes' => true,
 			'ignoreMissing' => true,
 		]);
 		$this->theme = $theme;

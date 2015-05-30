@@ -1,0 +1,75 @@
+.doko-a-profile {
+	.middle {
+		.container();
+	}
+	.main-title {
+		color: @text-muted;
+		margin-bottom: 1em;
+		margin-top: -0.75em;
+		text-align: center;
+	}
+	.main {
+		.make-row();
+	}
+	.user-summary {
+		.make-sm-column(4);
+		margin-bottom: 1em;
+	}
+	.user-profile {
+		.make-sm-column(8);
+	}
+	@media (min-width: @screen-sm-min) {
+		.main-title {
+			margin-top: -1em;
+		}
+	}
+}
+.user-summary {
+	background: rgba(0,0,0,0.05);
+	padding-top: 1em;
+	text-align: center;
+
+	.user-cover {
+		margin: 0 auto;
+		width: 150px;
+
+		.thumb {
+			padding-bottom: 100%;
+		}
+	}
+	.nav-profile {
+		> li {
+			display: inline-block;
+			vertical-align: top;
+
+			+ li {
+				margin-left: 0.15em;
+			}
+			a {
+				background: rgba(255,255,255,0.5);
+
+				&:hover,
+				&:focus {
+					background: #fff;
+				}
+			}
+			&.active a {
+				background: #fff;
+			}
+		}
+	}
+	@media (min-width: @screen-sm-min) {
+		padding-bottom: 1em;
+
+		.nav-profile {
+			> li {
+				display: block;
+
+				+ li {
+					margin-left: 0;
+					margin-top: 0.15em;
+				}
+			}
+		}
+	}
+}

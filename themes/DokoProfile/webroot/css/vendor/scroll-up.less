@@ -1,0 +1,25 @@
+#scrollUp {
+	.backface-visibility(hidden);
+	.icons-replace-text(1.2em);
+	.transition(opacity .2s);
+	background: @brand-primary;
+	border-radius: @border-radius-small 0 0 0;
+	bottom: 0;
+	color: #fff;
+	font-size: 35px;
+	height: 1.1em;
+	line-height: 1.1em;
+	opacity: .8;
+	right: 0;
+	text-decoration: none;
+
+	&:before {
+		.icon-angle-up();
+	}
+	&:hover {
+		opacity: .95;
+	}
+	@media (min-width: @screen-sm-min) {
+		font-size: 42px;
+	}
+}

@@ -1,0 +1,37 @@
+.btn-flat {
+	border-bottom-width: 0.25em;
+
+	&:active {
+		border-bottom: 1px;
+	}
+}
+.btn-ghost {
+	background: transparent;
+	border-color: currentColor;
+	color: inherit;
+}
+.btn-cta {
+	font-size: 1.25em;
+	padding: 0.75em 1.5em;
+
+	@media (min-width: @screen-sm-min) {
+		font-size: 1.75em;
+	}
+}
+.btn-readmore {
+	display: block;
+
+	&:after {
+		.icon();
+		.icons-append();
+		.icon-angle-right();
+	}
+	@media (min-width: @screen-xs-min) {
+		display: inline-block;
+	}
+}
+@media print {
+	.btn-readmore {
+		display: none;
+	}
+}

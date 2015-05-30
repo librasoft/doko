@@ -18,8 +18,8 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+use App\Routing\Router;
 use Cake\Core\Plugin;
-use Cake\Routing\Router;
 
 /**
  * The default class to use for all routes
@@ -39,7 +39,7 @@ use Cake\Routing\Router;
  * `:action` markers.
  *
  */
-Router::defaultRouteClass('Route');
+// Router::defaultRouteClass('Route');
 
 Router::scope('/', function ($routes) {
     /**

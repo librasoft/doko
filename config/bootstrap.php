@@ -38,6 +38,8 @@ if (!extension_loaded('intl')) {
     trigger_error('You must enable the intl extension to use CakePHP.', E_USER_ERROR);
 }
 
+use App\I18n\LanguageRegistry;
+use App\Routing\Router;
 use Cake\Cache\Cache;
 use Cake\Console\ConsoleErrorHandler;
 use Cake\Core\Configure;
@@ -65,7 +67,7 @@ try {
     Configure::load('settings/cake', 'default', false);
     mb_internal_encoding(Configure::read('App.encoding'));
     Configure::load('settings/doko', 'default', false);
-} catch (\Exception $e) {
+} catch (Exception $e) {
     die($e->getMessage() . "\n");
 }
 
@@ -90,13 +92,12 @@ ConnectionManager::config(Configure::consume('Datasources'));
 Log::config(Configure::consume('Log'));
 Security::salt(Configure::consume('Security.salt'));
 
-//TODO: get current languages
-$current_language = 'en';
-ini_set('intl.default_locale', $current_language);
-date_default_timezone_set(Configure::read('Doko.i18n.default-timezone'));
+LanguageRegistry::init(Configure::read('Doko.Frontend.languages'), Configure::read('Doko.Backend.languages'));
+ini_set('intl.default_locale', LanguageRegistry::$current);
+date_default_timezone_set(Configure::read('Doko.I18n.default-timezone'));
 
-if (Configure::read('Doko.i18n.' . $current_language)) {
-    Configure::write('Doko', Hash::merge(Configure::read('Doko'), Configure::read('Doko.i18n.' . $current_language)));
+if (Configure::read('Doko.I18n.' . LanguageRegistry::$current)) {
+    Configure::write('Doko', Hash::merge(Configure::read('Doko'), Configure::read('Doko.I18n.' . LanguageRegistry::$current)));
 }
 
 if (Configure::read('Doko.Owner.email')) {
@@ -107,6 +108,7 @@ if (Configure::read('Doko.Owner.email')) {
 
 Email::configTransport(Configure::consume('EmailTransport'));
 Email::config(Configure::consume('Email'));
+Router::defaultRouteClass('DashedRoute');
 
 /**
  * Set the full base URL.
@@ -115,15 +117,11 @@ Email::config(Configure::consume('Email'));
  * If you define fullBaseUrl in your config file you can remove this.
  */
 if (!Configure::read('App.fullBaseUrl')) {
-    if (Configure::read('Doko.Frontend.url_base')) {
-        Configure::write('App.fullBaseUrl', Configure::read('Doko.Frontend.url_base'));
-    } else {
-        $httpHost = env('HTTP_HOST');
-        if ($httpHost) {
-            Configure::write('App.fullBaseUrl', 'http' . (env('HTTPS') ? 's' : null) . '://' . $httpHost);
-        }
-        unset($httpHost);
+    $httpHost = env('HTTP_HOST');
+    if ($httpHost) {
+        Configure::write('App.fullBaseUrl', 'http' . (env('HTTPS') ? 's' : null) . '://' . $httpHost);
     }
+    unset($httpHost);
 }
 
 /**

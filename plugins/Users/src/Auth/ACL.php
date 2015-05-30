@@ -3,12 +3,9 @@
 namespace Users\Auth;
 
 use Cake\Core\Configure;
-use Cake\Core\InstanceConfigTrait;
 
 class ACL
 {
-
-    use InstanceConfigTrait;
 
     protected $_roles;
     protected $_userRole;

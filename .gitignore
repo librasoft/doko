@@ -2,6 +2,8 @@
 /logs/*
 /tmp/*
 /vendor/*
+/webroot/theme/*
+/webroot/upload/*
 
 composer.lock
 /nbproject/*

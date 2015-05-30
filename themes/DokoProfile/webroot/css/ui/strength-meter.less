@@ -1,0 +1,49 @@
+.strength-meter {
+	position: relative;
+
+	.meter-bar {
+		margin-left: -0.1em;
+		margin-right: -0.1em;
+		margin-top: 0.1em;
+		overflow: hidden;
+
+		> span {
+			background: @hr-border;
+			border-left: 0.1em solid @body-bg;
+			border-right: 0.1em solid @body-bg;
+			height: 0.25em;
+			float: left;
+			width: (100% / 3);
+		}
+	}
+	.meter-label {
+		font-size: 0.8em;
+		position: absolute;
+		text-transform: uppercase;
+		top: -1.5em;
+	}
+	&.strength-weak {
+		color: @brand-danger;
+
+		.meter-bar .bar-1 {
+			background: @brand-danger;
+		}
+	}
+	&.strength-normal {
+		color: @brand-warning;
+
+		.meter-bar .bar-1,
+		.meter-bar .bar-2 {
+			background: @brand-warning;
+		}
+	}
+	&.strength-strong {
+		color: @brand-success;
+
+		.meter-bar .bar-1,
+		.meter-bar .bar-2,
+		.meter-bar .bar-3 {
+			background: @brand-success;
+		}
+	}
+}

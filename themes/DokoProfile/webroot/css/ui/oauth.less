@@ -1,0 +1,50 @@
+.oauth-providers {
+	list-style: none;
+	margin: 1em 0 0.25em;
+	padding: 0;
+	text-align: center;
+
+	> li {
+		display: inline-block;
+		margin-bottom: 0.2em;
+	}
+}
+.btn-oauth {
+	.btn-flat();
+	font-size: @font-size-small - 1;
+	padding: 0.25em 0.35em 0.25em 0.25em;
+
+	&:before {
+		.icon();
+		.icons-box();
+		.icons-prepend(0.5em);
+		font-size: 1.5em;
+		line-height: 0;
+		height: 0;
+		vertical-align: middle;
+	}
+	@media (min-width: @screen-xs-min) {
+		font-size: @font-size-base;
+	}
+}
+.btn-facebook {
+	.button-variant(#fff; @brand-facebook; rgba(0,0,0,0.1));
+
+	&:before {
+		.icon-facebook();
+	}
+}
+.btn-twitter {
+	.button-variant(#fff; @brand-twitter; rgba(0,0,0,0.1));
+
+	&:before {
+		.icon-twitter();
+	}
+}
+.btn-google {
+	.button-variant(#fff; @brand-google; rgba(0,0,0,0.1));
+
+	&:before {
+		.icon-google-plus();
+	}
+}

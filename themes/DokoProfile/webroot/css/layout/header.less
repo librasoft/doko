@@ -1,0 +1,91 @@
+.header {
+	text-align: center;
+}
+.header-title {
+	background: @brand-primary;
+	color: #fff;
+	display: inline-block;
+	font-size: 1.8em;
+	letter-spacing: -0.1em;
+	line-height: 0.8;
+	margin: 2.5em 0.25em 0.75em;
+	padding: 0.25em 0.35em;
+	text-align: center;
+	text-transform: uppercase;
+}
+.back-home {
+	.transition(0.25s ease);
+	background: rgba(0,0,0,0.1);
+	border: 0;
+	border-radius: 0 0 0.1em 0;
+	color: inherit;
+	display: inline-block;
+	padding: 0.5em 0.5em;
+	position: absolute;
+	left: 0;
+	top: 0;
+
+	&:before {
+		.icon();
+		.icons-prepend(0.5em);
+		.icon-arrow-back();
+		font-size: 1.25em;
+		line-height: @line-height-computed;
+		vertical-align: middle;
+	}
+	&:hover,
+	&:focus {
+		background: transparent;
+		text-decoration: none;
+	}
+}
+.nav-langs {
+	position: absolute;
+	right: 0;
+	top: 0;
+
+	.dropdown-toggle {
+		.transition(0.25s ease);
+		background: rgba(0,0,0,0.1);
+		border: 0;
+		border-radius: 0 0 0 0.1em;
+		color: inherit;
+		padding: 0.5em 0.5em;
+
+		&:before {
+			.icon();
+			.icons-prepend(0.5em);
+			.icon-i18n();
+			font-size: 1.25em;
+			line-height: @line-height-computed;
+			vertical-align: middle;
+		}
+		&:hover,
+		&:focus {
+			background: transparent;
+			color: @link-hover-color;
+		}
+	}
+	.open .dropdown-toggle {
+		&,
+		&:hover,
+		&:focus {
+			background: transparent;
+			color: @link-hover-color;
+		}
+	}
+	.dropdown-menu {
+		left: auto;
+		right: 0;
+	}
+}
+@media (min-width: @screen-xs-min) {
+	.header-title {
+		font-size: 2.2em;
+	}
+}
+@media (min-width: @screen-sm-min) {
+	.header-title {
+		font-size: 3em;
+	}
+}

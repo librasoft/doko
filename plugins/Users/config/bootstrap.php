@@ -1,9 +1,9 @@
 <?php
 
+use App\Routing\Router;
 use Cake\Cache\Cache;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
-use Cake\Routing\Router;
 
 EventManager::instance()->on('Controller.hookComponents', function (Event $event) {
 	$event->subject()->loadComponent('Auth', [
@@ -31,6 +31,7 @@ Router::scope('/', function($routes) {
     $routes->extensions(['json']);
 	$routes->connect('/login', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login']);
 	$routes->connect('/logout', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'logout']);
+	$routes->connect('/register', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'register']);
 	$routes->connect('/forgot-password', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'forgot']);
 	$routes->connect('/reset-password/*', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'reset']);
 	$routes->connect('/clear-logins', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'clear_logins']);
