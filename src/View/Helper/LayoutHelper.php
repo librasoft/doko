@@ -24,7 +24,8 @@ class LayoutHelper extends Helper
      *
      * @return string
      */
-    public function lang() {
+    public function lang()
+    {
         return LanguageRegistry::$current;
     }
 
@@ -35,7 +36,8 @@ class LayoutHelper extends Helper
      * @param string|array $classes
      * @return string
      */
-    public function setCss($classes) {
+    public function setCss($classes)
+    {
         $this->_View->set('documentCss', array_unique(array_merge((array) $this->_View->get('documentCss'), (array) $classes)));
     }
 
@@ -45,7 +47,8 @@ class LayoutHelper extends Helper
      * @param array $url_params
      * @return string
      */
-    protected function _getCss($url_params = null) {
+    protected function _getCss($url_params = null)
+    {
         $classes = (array) $this->_View->get('documentCss');
 
         if ($url_params) {
@@ -66,7 +69,8 @@ class LayoutHelper extends Helper
      * @param string|array $functions
      * @return string
      */
-    public function setJs($functions = null) {
+    public function setJs($functions = null)
+    {
         if (is_string($functions)) {
             $functions = [
                 $functions => 'init',
@@ -88,7 +92,8 @@ class LayoutHelper extends Helper
      * @param array $url_params
      * @return string
      */
-    protected function _getJs($url_params = null) {
+    protected function _getJs($url_params = null)
+    {
         $functions = (array) $this->_View->get('documentJs');
 
         if ($url_params) {
@@ -126,7 +131,8 @@ class LayoutHelper extends Helper
      *
      * @return string
      */
-    public function htmlStart() {
+    public function htmlStart()
+    {
         $url_params = $this->_parseUrlParams($this->request);
 
         return '<html'
@@ -141,7 +147,8 @@ class LayoutHelper extends Helper
      *
      * @param string $sep the char separating page and site title.
      */
-    public function title($sep = '|') {
+    public function title($sep = '|')
+    {
         $title = strip_tags($this->_View->fetch('title'));
 
         if (!$title) {
@@ -158,7 +165,8 @@ class LayoutHelper extends Helper
      *
      * @param type $viewport The value of the viewport to use.
      */
-    public function viewport($viewport = 'width=device-width, initial-scale=1') {
+    public function viewport($viewport = 'width=device-width, initial-scale=1')
+    {
         echo "\n\t" . $this->Html->meta([
             'name' => 'viewport',
             'content' => $viewport,
@@ -170,7 +178,8 @@ class LayoutHelper extends Helper
      *
      * @param mixed $url
      */
-    public function setCanonical($url = null) {
+    public function setCanonical($url = null)
+    {
         $this->_View->set('canonical', $this->Url->build($url, true));
     }
 
@@ -187,7 +196,8 @@ class LayoutHelper extends Helper
      * @param string $content
      * @param string $type
      */
-    public function setMeta($meta, $content = null, $type = 'meta') {
+    public function setMeta($meta, $content = null, $type = 'meta')
+    {
         $available_types = [
             'meta', 'link', 'property', 'lang',
         ];
@@ -214,7 +224,8 @@ class LayoutHelper extends Helper
      *
      * @return string
      */
-    public function documentMeta() {
+    public function documentMeta()
+    {
         $types = [
             'meta' => [
                 'name',
@@ -256,7 +267,8 @@ class LayoutHelper extends Helper
      * @param array $meta
      * @return array
      */
-    protected function _initMeta($meta) {
+    protected function _initMeta($meta)
+    {
         // Type meta
         if (empty($meta['meta'])) {
             $meta['meta'] = [];
@@ -330,7 +342,8 @@ class LayoutHelper extends Helper
      *
      * @return array
      */
-    public function getLanguagesLinks() {
+    public function getLanguagesLinks()
+    {
         $languages_links = (array) $this->_View->get('languages_links');
 
         if (!$languages_links) {
@@ -358,7 +371,8 @@ class LayoutHelper extends Helper
      * @param array|string $vars
      * @param mixed $value
      */
-    public function setJsVars($vars, $value = null) {
+    public function setJsVars($vars, $value = null)
+    {
         if (is_string($vars)) {
             $vars = [
                 $vars => $value,
@@ -378,7 +392,8 @@ class LayoutHelper extends Helper
      *
      * @return string
      */
-    public function initJsVars() {
+    public function initJsVars()
+    {
         $url_params = $this->_parseUrlParams($this->request);
         unset($url_params['prefix'], $url_params['plugin'], $url_params['controller'], $url_params['action']);
 
@@ -400,7 +415,8 @@ class LayoutHelper extends Helper
      * @param array other libs to call
      * @return string
      */
-    public function oldIE($ie_version = 8, $libs = []) {
+    public function oldIE($ie_version = 8, $libs = [])
+    {
         $default = [
             '//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js',
             '//cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.min.js',
@@ -417,7 +433,8 @@ class LayoutHelper extends Helper
      * @param string $base_url
      * @return string
      */
-    public function setMicrodata($type, $base_url = 'http://schema.org/') {
+    public function setMicrodata($type, $base_url = 'http://schema.org/')
+    {
         $this->_View->set('documentMicrodata', $base_url . $type);
     }
 
@@ -428,7 +445,8 @@ class LayoutHelper extends Helper
      * @param string $base_url
      * @return string
      */
-    protected function _getMicrodata() {
+    protected function _getMicrodata()
+    {
         if ($this->_View->get('documentMicrodata')) {
             return ' itemscope itemtype="' . $this->_View->get('documentMicrodata') . '"';
         }
@@ -441,7 +459,8 @@ class LayoutHelper extends Helper
      *
      * @return string
      */
-    public function bodyStart() {
+    public function bodyStart()
+    {
         return '<body' . $this->_getMicrodata() . '>' . "\n";
     }
 
@@ -465,11 +484,12 @@ class LayoutHelper extends Helper
 	 * @param integer $level
 	 * @return string
 	 */
-	public function nestedList($items = [], $options = [], $level = 0) {
+	public function nestedList($items = [], $options = [], $level = 0)
+    {
 		$_options = [
 			'mode' => 'ul', // possible values: ul, div, dropdown
             'class' => '',
-			'attrs' => array(),
+			'attrs' => [],
 		];
 		$options += $_options;
 
@@ -494,7 +514,6 @@ class LayoutHelper extends Helper
 			} elseif (!empty($item['link'])) {
 				$item['link']['title'] = !empty($item['link']['title']) ? $item['link']['title'] : '';
 				$item['link']['options'] = !empty($item['link']['options']) ? $item['link']['options'] : [];
-				$item['link']['options']['escape'] = false;
 				$item['link']['options']['class'] = !empty($item['link']['options']['class']) ? $item['link']['options']['class'] : '';
 
 				if ($options['mode'] === 'dropdown' && !empty($item['children'])) {
@@ -505,7 +524,9 @@ class LayoutHelper extends Helper
 
                 $item['options']['class'] .= ' ' . $this->activeClass($item['link']['url'], $item['children']);
 
-				$item_output = $this->Html->link($item['link']['title'], $item['link']['url'], $item['link']['options']);
+				$item_output = $this->Html->link($item['link']['title'], $this->Url->build($item['link']['url']), $item['link']['options'] + [
+                    'escapeTitle' => false,
+                ]);
 			} elseif ($item['options']['class'] === 'divider') {
 				$item_output = '';
 			}
@@ -532,15 +553,9 @@ class LayoutHelper extends Helper
 		}
 
         if ($output) {
-            if ($options['mode'] === 'div') {
-                return $this->Html->tag('div', $output, array(
-                    'class' => $options['class'],
-                ) + $options['attrs']);
-            } else {
-                return $this->Html->tag('ul', $item_output, array(
-                    'class' => $options['class'],
-                ) + $options['attrs']);
-            }
+            return $this->Html->tag($options['mode'] === 'div' ? 'div' : 'ul', $output, [
+                'class' => $options['class'],
+            ] + $options['attrs']);
         }
 
         return '';
@@ -554,20 +569,38 @@ class LayoutHelper extends Helper
 	 * @param type $children
 	 * @return string
 	 */
-	public function activeClass($url, $children = array()) {
-//		if ($this->_View->get('canonical') && DokoRouter::url($url, true) === $this->_View->get('canonical')) {
-//			return 'active';
-//		}
-//		if ($this->isInCrumb($url)) {
-//			return 'active active-parent';
-//		}
-//
-//		foreach ($children as $child) {
-//			if (!empty($child['link']) && $this->activeClass($child['link']['url'], !empty($child['children']) ? $child['children'] : array())) {
-//				return 'active active-parent';
-//			}
-//		}
+	public function activeClass($url, $children = [])
+    {
+		if ($this->_View->get('canonical') && $this->Url->build($url, true) === $this->_View->get('canonical')) {
+			return 'active';
+		}
+		if ($this->Html->inCrumb($url)) {
+			return 'active active-parent';
+		}
+		foreach ($children as $child) {
+			if (!empty($child['link']) && $this->activeClass($child['link']['url'], !empty($child['children']) ? $child['children'] : [])) {
+				return 'active active-parent';
+			}
+		}
 
 		return '';
 	}
+
+	/**
+	 * Analytics Snippet to track the page view.
+	 */
+	public function analyticsTrackPage()
+    {
+        $output = '';
+		$analytics = (array)Configure::read('Services.analytics');
+
+        foreach ($analytics as $provider => $key) {
+            if ($key) {
+                $output .= $this->_View->element('Analytics/' . $provider . '/trackPage', compact('key'));
+            }
+        }
+
+        return $output;
+	}
+
 }

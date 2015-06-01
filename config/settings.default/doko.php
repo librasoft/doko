@@ -37,6 +37,7 @@ $doko = [
         ],
     ],
     'Backend' => [
+        'home-url' => '/admin/',
         'theme' => 'DokoAdmin',
         'languages' => [
             'it',

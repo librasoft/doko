@@ -45,4 +45,45 @@ class HtmlHelper extends BaseHtmlHelper
         ]
     ];
 
+    protected $_crumbs_urls = [];
+
+    public function addCrumb($name, $link = null, array $options = [])
+    {
+		if ($name === null) {
+			$name = $this->_View->get('title');
+		}
+		$link = $this->Url->build($link, true);
+        $this->_crumbs_urls[] = $link;
+
+        return parent::addCrumb($name, $link, $options);
+    }
+
+	public function inCrumb($url)
+    {
+		return in_array($this->Url->build($url, true), $this->_crumbs_urls);
+	}
+
+	public function getCrumbs($separator = '>', $startText = false)
+    {
+		$output = '';
+        $crumbs = $this->_prepareCrumbs($startText);
+
+        for ($i = 0, $n = count($crumbs); $i < $n; $i++) {
+			$output .= '<span class="breadcrumbs-item" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">';
+
+			if ($i > 0) {
+				$output .= '<span class="breadcrumbs-sep">' . $separator . '</span> ';
+			}
+
+			$output .= $this->link('<span class="breadcrumbs-title" itemprop="title">' . $crumbs[$i][0] . '</span>', $crumbs[$i][1], array(
+				'itemprop' => 'url',
+				'escape' => false,
+				'class' => 'breadcrumbs-link',
+			) + $crumbs[$i][2]);
+			$output .= '</span> ';
+		}
+
+		return $output;
+	}
+
 }

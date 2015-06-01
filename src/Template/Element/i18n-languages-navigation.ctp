@@ -22,7 +22,8 @@ foreach ($languages_links as $language => $link) {
     if ($is_current && $options['mode'] !== 'plain') {
         continue;
     }
-    $title = 'cacca';
+    $title = mb_convert_case(locale_get_display_language($language, $language), MB_CASE_TITLE, 'utf-8');
+
     switch ($options['titles']) {
         case '2-letters':
             $title = substr($title, 0, 2);
@@ -31,6 +32,11 @@ foreach ($languages_links as $language => $link) {
             $title = substr($title, 0, 3);
             break;
     }
+
+    if ($options['mode'] === 'dropdown') {
+        $title .= sprintf(' (%s)', mb_convert_case(locale_get_display_language($language), MB_CASE_TITLE, 'utf-8'));
+    }
+
     $languages_nav[] = [
         'link' => [
             'title' => $title,
@@ -48,7 +54,8 @@ foreach ($languages_links as $language => $link) {
 
 if ($options['mode'] === 'dropdown') {
     $language = App\I18n\LanguageRegistry::$current;
-    $title = 'cacca';
+    $title = mb_convert_case(locale_get_display_language($language), MB_CASE_TITLE, 'utf-8');
+
     switch ($options['titles']) {
         case '2-letters':
             $title = substr($title, 0, 2);
@@ -57,6 +64,7 @@ if ($options['mode'] === 'dropdown') {
             $title = substr($title, 0, 3);
             break;
     }
+
     $languages_nav = [
         [
             'link' => [

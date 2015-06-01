@@ -4,6 +4,7 @@ namespace App\Routing;
 
 use App\I18n\LanguageRegistry;
 use App\Routing\RouteBuilder;
+use Cake\Core\Configure;
 use Cake\Routing\Router as BaseRouter;
 
 class Router extends BaseRouter
@@ -36,29 +37,7 @@ class Router extends BaseRouter
 
     public static function url($url = null, $full = false)
     {
-        if (empty($url)) {
-            $url = parent::url($url, false);
-            if ($full) {
-                $url = static::fullBaseUrl() . $url;
-            }
-        } elseif (is_array($url)) {
-            $url = parent::url($url, $full);
-        } else {
-            $plainString = (
-                strpos($url, 'javascript:') === 0 ||
-                strpos($url, 'mailto:') === 0 ||
-                strpos($url, 'tel:') === 0 ||
-                strpos($url, 'sms:') === 0 ||
-                strpos($url, '#') === 0 ||
-                strpos($url, '?') === 0 ||
-                strpos($url, '//') === 0 ||
-                strpos($url, '://') !== false
-            );
-
-            if ($plainString) {
-                return $url;
-            }
-        }
+        $url = parent::url($url, $full);
 
         if (!preg_match('@(\/\?|(\.[a-zA-Z0-9]|\/)$)@', $url)) {
             $url = strpos($url, '?') ? str_replace('?', '/?', $url) : $url . '/';

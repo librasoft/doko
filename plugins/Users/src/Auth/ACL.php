@@ -14,7 +14,7 @@ class ACL
     public function __construct($user_role = null)
     {
         if (!Configure::read('ACL')) {
-            Configure::load('acl', 'default', false);
+            Configure::load('settings/acl', 'default', false);
         }
 
         $this->_roles = Configure::read('ACL.Roles');
