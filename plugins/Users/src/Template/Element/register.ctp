@@ -3,13 +3,15 @@ use Cake\Core\Configure;
 ?>
 <?= $this->Flash->render('auth') ?>
 <?= $this->Form->create($user, [
+	'honeypot' => true,
     'url' => [
         'plugin' => 'Users',
         'controller' => 'Users',
-        'action' => 'login',
+        'action' => 'register',
     ],
-    'class' => 'login-form',
+    'class' => 'register-form',
 ]) ?>
+	<p class="help-block"><?= __d('Users', 'The symbol <i>*</i> indicates that the field is required.') ?></p>
     <?= $this->Form->input('name', [
         'type' => 'text',
         'label' => __d('Users', 'Name'),
@@ -36,7 +38,7 @@ use Cake\Core\Configure;
     ]) ?>
     <?= $this->Form->input('timezone', [
 		'type' => 'hidden',
-		'secure' => false, //Updated via javascript
+		'mutable' => true,
     ]) ?>
     <div class="form-actions">
         <?= $this->Form->button(__d('Users', 'Submit'), [

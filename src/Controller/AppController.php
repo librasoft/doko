@@ -46,6 +46,7 @@ class AppController extends Controller
 		}
 
         $this->loadComponent('Languages');
+        $this->loadComponent('Form');
 		$this->loadComponent('Csrf');
 		$this->loadComponent('Security');
         $this->loadComponent('Flash');

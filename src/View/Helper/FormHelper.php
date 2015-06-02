@@ -1,6 +1,7 @@
 <?php
 namespace App\View\Helper;
 
+use App\Routing\Router;
 use Cake\Utility\Inflector;
 use Cake\View\Helper\FormHelper as BaseFormHelper;
 use Cake\View\View;
@@ -11,6 +12,13 @@ use Cake\View\View;
 class FormHelper extends BaseFormHelper
 {
     use OptionsAwareTrait;
+
+    protected $_honeypots	= [
+        ['name' => 'full-name', 'type' => 'text'],
+        ['name' => 'email-address', 'type' => 'email'],
+        ['name' => 'website-url', 'type' => 'url'],
+        ['name' => 'body-description', 'type' => 'textarea'],
+    ];
 
     public function __construct(View $View, array $config = [])
     {
@@ -29,9 +37,33 @@ class FormHelper extends BaseFormHelper
 
     public function create($model = null, array $options = [])
     {
-        return parent::create($model, $options + [
+        $output = parent::create($model, $options + [
             'role' => 'form',
         ]);
+        if (!empty($options['honeypot'])) {
+            if (!isset($this->request->data['_timestamp'])) {
+                $this->request->data['_timestamp'] = time();
+            }
+            $out = $this->hidden('_timestamp', [
+                'value' => $this->request->data['_timestamp'],
+            ]);
+
+            if (isset($this->request->data['_honeypot'])) {
+                $honeypot = json_decode($this->request->data['_honeypot'], true);
+            } else {
+                $honeypot = $this->_honeypots[mt_rand(0, count($this->_honeypots) - 1)];
+            }
+            $out .= $this->hidden('_honeypot', [
+                'value' => json_encode($honeypot),
+            ]);
+            $out .= $this->input($honeypot['name'], [
+                'type' => $honeypot['type'],
+                'label' => __d('Doko', 'Leave this empty'),
+                'mutable' => true,
+            ]);
+            $output .= $this->formatTemplate('hiddenBlock', ['content' => $out]);
+        }
+        return $output;
     }
 
     public function input($fieldName, array $options = [])
@@ -46,6 +78,7 @@ class FormHelper extends BaseFormHelper
             'options' => null,
             'between' => null,
             'help' => null,
+            'mutable' => false,
             'templates' => [],
         ];
         $options = $this->_parseOptions($fieldName, $options);
@@ -76,13 +109,24 @@ class FormHelper extends BaseFormHelper
         }
 
         $result = parent::input($fieldName, $options);
+        if ($options['mutable']) {
+            $this->unlockField($fieldName);
+        }
         $this->templates($reset);
         return $result;
     }
 
+    protected function _lastAction($url)
+    {
+        $action = Router::url($url, true);
+        $query = parse_url($action, PHP_URL_QUERY);
+        $query = $query ? '?' . $query : '';
+        $this->_lastAction = parse_url($action, PHP_URL_PATH) . $query;
+    }
+
     protected function _getInput($fieldName, $options)
     {
-        unset($options['help'], $options['between']);
+        unset($options['help'], $options['between'], $options['mutable']);
         return parent::_getInput($fieldName, $options);
     }
 

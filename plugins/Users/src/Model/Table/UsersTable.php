@@ -2,6 +2,7 @@
 
 namespace Users\Model\Table;
 
+use App\I18n\LanguageRegistry;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\ORM\RulesChecker;
@@ -51,7 +52,7 @@ class UsersTable extends Table
                 'valid' => [
                     'rule' => function ($value, $context) {
                         if (!Configure::read('ACL')) {
-                            Configure::load('acl', 'default', false);
+                            Configure::load('settings/acl', 'default', false);
                         }
                         return empty($value) || Configure::check('ACL.Roles.' . $value);
                     },
@@ -75,8 +76,8 @@ class UsersTable extends Table
      * Returns a rules checker object that will be used for validating
      * application integrity.
      *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
+     * @param RulesChecker $rules The rules object to be modified.
+     * @return RulesChecker
      */
     public function buildRules(RulesChecker $rules)
     {
@@ -88,7 +89,13 @@ class UsersTable extends Table
     {
         if ($entity->isNew()) {
             if (!$entity->has('role')) {
+                if (!Configure::read('ACL')) {
+                    Configure::load('settings/acl', 'default', false);
+                }
                 $entity->role = Configure::read('ACL.Defaults.register');
+            }
+            if (!$entity->has('language')) {
+                $entity->language = LanguageRegistry::$current;
             }
         }
 
