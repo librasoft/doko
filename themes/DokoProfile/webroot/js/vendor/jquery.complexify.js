@@ -136,6 +136,7 @@
 			}
 
 			function inBanlist(str) {
+                str = str.toLowerCase();
 				if (options.banMode === 'strict') {
 					for (var i = 0; i < options.bannedPasswords.length; i++) {
 						if (options.bannedPasswords[i].indexOf(str) !== -1) {

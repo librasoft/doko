@@ -33,7 +33,7 @@ class UsersSavedLoginsTable extends Table
      */
     public function prune($user_id = null, $time_limit = null)
     {
-        $conditions = array();
+        $conditions = [];
 
         if (!empty($user_id)) {
             $conditions += [

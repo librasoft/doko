@@ -464,93 +464,93 @@ class LayoutHelper extends Helper
         return '<body' . $this->_getMicrodata() . '>' . "\n";
     }
 
-	/**
-	 * Returns a nested html list of items with a standard structure.
-	 * $item's structure:
-	 * 		'element'	=> render element with given:
-	 * 			'name'		=> element name
-	 * 			'data'		=> element data
-	 * 			'options'	=> element options
-	 * 		'link'		=> render link with given:
-	 * 			'title'		=> link title
-	 * 			'url'		=> link url
-	 * 			'options'	=> link options
-	 * 			'confirm'	=> link confirm alert
-	 * 		'options'	=> options for the current item
-	 * 		'children'	=> item's children
-	 *
-	 * @param array $items
-	 * @param array $options
-	 * @param integer $level
-	 * @return string
-	 */
-	public function nestedList($items = [], $options = [], $level = 0)
+    /**
+     * Returns a nested html list of items with a standard structure.
+     * $item's structure:
+     * 		'element'	=> render element with given:
+     * 			'name'		=> element name
+     * 			'data'		=> element data
+     * 			'options'	=> element options
+     * 		'link'		=> render link with given:
+     * 			'title'		=> link title
+     * 			'url'		=> link url
+     * 			'options'	=> link options
+     * 			'confirm'	=> link confirm alert
+     * 		'options'	=> options for the current item
+     * 		'children'	=> item's children
+     *
+     * @param array $items
+     * @param array $options
+     * @param integer $level
+     * @return string
+     */
+    public function nestedList($items = [], $options = [], $level = 0)
     {
-		$_options = [
-			'mode' => 'ul', // possible values: ul, div, dropdown
+        $_options = [
+            'mode' => 'ul', // possible values: ul, div, dropdown
             'class' => '',
-			'attrs' => [],
-		];
-		$options += $_options;
+            'attrs' => [],
+        ];
+        $options += $_options;
 
-		$output = '';
-		$options['class'] .= ' level-' . ($level + 1);
+        $output = '';
+        $options['class'] .= ' level-' . ($level + 1);
 
-		foreach ($items as $item) {
-			$item_output = null;
+        foreach ($items as $item) {
+            $item_output = null;
 
-			$item['options'] = !empty($item['options']) ? $item['options'] : [];
+            $item['options'] = !empty($item['options']) ? $item['options'] : [];
             $item['options']['class'] = !empty($item['options']['class']) ? $item['options']['class'] : '';
-			$item['children'] = !empty($item['children']) ? $item['children'] : [];
+            $item['children'] = !empty($item['children']) ? $item['children'] : [];
 
-			if (!empty($item['element'])) {
+            if (!empty($item['element'])) {
                 if (empty($item['element']['name'])) {
                     continue;
                 }
-				$item['element']['data'] = !empty($item['element']['data']) ? $item['element']['data'] : [];
-				$item['element']['options'] = !empty($item['element']['options']) ? $item['element']['options'] : [];
+                $item['element']['data'] = !empty($item['element']['data']) ? $item['element']['data'] : [];
+                $item['element']['options'] = !empty($item['element']['options']) ? $item['element']['options'] : [];
 
-				$item_output = $this->_View->element($item['element']['name'], $item['element']['data'], $item['element']['options']);
-			} elseif (!empty($item['link'])) {
-				$item['link']['title'] = !empty($item['link']['title']) ? $item['link']['title'] : '';
-				$item['link']['options'] = !empty($item['link']['options']) ? $item['link']['options'] : [];
-				$item['link']['options']['class'] = !empty($item['link']['options']['class']) ? $item['link']['options']['class'] : '';
+                $item_output = $this->_View->element($item['element']['name'], $item['element']['data'], $item['element']['options']);
+            } elseif (!empty($item['link'])) {
+                $item['link']['title'] = !empty($item['link']['title']) ? $item['link']['title'] : '';
+                $item['link']['options'] = !empty($item['link']['options']) ? $item['link']['options'] : [];
+                $item['link']['options']['class'] = !empty($item['link']['options']['class']) ? $item['link']['options']['class'] : '';
 
-				if ($options['mode'] === 'dropdown' && !empty($item['children'])) {
-					$item['link']['title'] .= ' <span class="caret"></span>';
-					$item['link']['options']['class'] .= ' dropdown-toggle';
-					$item['link']['options']['data-toggle'] = 'dropdown';
-				}
+                if ($options['mode'] === 'dropdown' && !empty($item['children'])) {
+                    $item['link']['title'] .= ' <span class="caret"></span>';
+                    $item['link']['options']['class'] .= ' dropdown-toggle';
+                    $item['link']['options']['data-toggle'] = 'dropdown';
+                }
 
                 $item['options']['class'] .= ' ' . $this->activeClass($item['link']['url'], $item['children']);
 
-				$item_output = $this->Html->link($item['link']['title'], $this->Url->build($item['link']['url']), $item['link']['options'] + [
+                $item_output = $this->Html->link($item['link']['title'], $this->Url->build($item['link']['url']), $item['link']['options'] + [
                     'escapeTitle' => false,
                 ]);
-			} elseif ($item['options']['class'] === 'divider') {
-				$item_output = '';
-			}
+            } elseif ($item['options']['class'] === 'divider') {
+                $item_output = '';
+            }
 
-			//Render item's children
-			if (!empty($item['children'])) {
-				$children_options = $options;
+            //Render item's children
+            if (!empty($item['children'])) {
+                $children_options = $options;
 
-				if ($options['mode'] === 'dropdown') {
-					$item['options']['class'] .= ' dropdown';
-					$children_options['class'] = 'dropdown-menu';
-				}
+                if ($options['mode'] === 'dropdown') {
+                    $item['options']['class'] .= ' dropdown';
+                    $children_options['class'] = 'dropdown-menu';
+                }
 
-				$item_output .= $this->nestedList($item['children'], $children_options, $level + 1);
-			}
+                $item_output .= $this->nestedList($item['children'], $children_options, $level + 1);
+            }
 
-			if ($item_output !== null) {
+            if ($item_output !== null) {
                 if ($options['mode'] === 'div') {
                     $output .= $item_output;
                 } else {
                     $output .= $this->Html->tag('li', $item_output, $item['options']);
                 }
-			}
-		}
+            }
+        }
 
         if ($output) {
             return $this->Html->tag($options['mode'] === 'div' ? 'div' : 'ul', $output, [
@@ -559,40 +559,40 @@ class LayoutHelper extends Helper
         }
 
         return '';
-	}
+    }
 
-	/**
-	 * Given an item's url and a list of the item's children,
-	 * returns the "active" css class relative to the current request url.
-	 *
-	 * @param type $url
-	 * @param type $children
-	 * @return string
-	 */
-	public function activeClass($url, $children = [])
+    /**
+     * Given an item's url and a list of the item's children,
+     * returns the "active" css class relative to the current request url.
+     *
+     * @param type $url
+     * @param type $children
+     * @return string
+     */
+    public function activeClass($url, $children = [])
     {
-		if ($this->_View->get('canonical') && $this->Url->build($url, true) === $this->_View->get('canonical')) {
-			return 'active';
-		}
-		if ($this->Html->inCrumb($url)) {
-			return 'active active-parent';
-		}
-		foreach ($children as $child) {
-			if (!empty($child['link']) && $this->activeClass($child['link']['url'], !empty($child['children']) ? $child['children'] : [])) {
-				return 'active active-parent';
-			}
-		}
+        if ($this->_View->get('canonical') && $this->Url->build($url, true) === $this->_View->get('canonical')) {
+            return 'active';
+        }
+        if ($this->Html->inCrumb($url)) {
+            return 'active active-parent';
+        }
+        foreach ($children as $child) {
+            if (!empty($child['link']) && $this->activeClass($child['link']['url'], !empty($child['children']) ? $child['children'] : [])) {
+                return 'active active-parent';
+            }
+        }
 
-		return '';
-	}
+        return '';
+    }
 
-	/**
-	 * Analytics Snippet to track the page view.
-	 */
-	public function analyticsTrackPage()
+    /**
+     * Analytics Snippet to track the page view.
+     */
+    public function analyticsTrackPage()
     {
         $output = '';
-		$analytics = (array)Configure::read('Services.analytics');
+        $analytics = (array)Configure::read('Services.analytics');
 
         foreach ($analytics as $provider => $key) {
             if ($key) {
@@ -601,6 +601,6 @@ class LayoutHelper extends Helper
         }
 
         return $output;
-	}
+    }
 
 }

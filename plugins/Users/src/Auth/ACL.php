@@ -23,7 +23,7 @@ class ACL
             throw new \RuntimeException('Bad ACL configuration');
         }
 
-        $this->_userRole = $user_role ?: Configure::read('ACL.Defaults.register');
+        $this->_userRole = $user_role ?: Configure::read('ACL.Defaults.anonymous');
         $this->_requireAuth = Configure::read('ACL.Auth');
 
         foreach ($this->_roles as $key => $values) {

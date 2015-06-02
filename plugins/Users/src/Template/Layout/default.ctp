@@ -1,5 +1,4 @@
 <?php
-use App\Auth\ACL;
 use Cake\Core\Configure;
 ?>
 <!doctype html>
@@ -62,9 +61,9 @@ use Cake\Core\Configure;
 
 <footer class="wrapper wrapper-footer" role="contentinfo">
     <div class="footer">
-        <p class="powered-by"><?= $this->Html->link(__d('Doko', 'Doko di Librasoft'), 'http://www.librasoftsnc.it', array(
+        <p class="powered-by"><?= $this->Html->link(__d('Doko', 'Doko di Librasoft'), 'http://www.librasoftsnc.it', [
             'target' => '_blank',
-        )); ?></p>
+        ]); ?></p>
     </div>
 </footer>
 

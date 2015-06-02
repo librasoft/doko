@@ -14,9 +14,12 @@
  */
 namespace App\Controller;
 
+use App\Routing\Router;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
+use Cake\Event\Event;
+use Cake\Network\Response;
 
 /**
  * Application Controller
@@ -42,6 +45,7 @@ class AppController extends Controller
             $this->loadTheme(Configure::read('Doko.Frontend.theme'));
 		}
 
+        $this->loadComponent('Languages');
 		$this->loadComponent('Csrf');
 		$this->loadComponent('Security');
         $this->loadComponent('Flash');
@@ -66,5 +70,11 @@ class AppController extends Controller
 		]);
 		$this->theme = $theme;
 	}
+
+    public function beforeRedirect(Event $event, $url, Response $response)
+    {
+        $response->location(Router::url($url, true));
+        return $response;
+    }
 
 }

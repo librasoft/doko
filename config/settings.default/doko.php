@@ -45,6 +45,8 @@ $doko = [
     ],
     'Profile' => [
         'theme' => 'DokoProfile',
+        'password_min_length' => 8,
+        'password_strength_factor' => 0.6,
     ],
     'I18n' => [
         'default-timezone' => 'Europe/Rome',

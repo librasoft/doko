@@ -10,7 +10,6 @@
         "mobiledetect/mobiledetectlib": "2.*",
         "cakephp/migrations": "~1.0",
         "cakephp/plugin-installer": "*",
-        "sly/notification-pusher": "2.x",
         "FriendsOfCake/crud": "dev-cake3"
     },
     "require-dev": {

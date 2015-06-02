@@ -37,6 +37,16 @@ class Router extends BaseRouter
 
     public static function url($url = null, $full = false)
     {
+        if (LanguageRegistry::$multilanguage) {
+            if (is_array($url)) {
+                if (!array_key_exists('language', $url)) {
+                    $url['language'] = LanguageRegistry::$current;
+                }
+            } elseif ($url === '/') {
+                $url = '/' . LanguageRegistry::$current . '/';
+            }
+        }
+
         $url = parent::url($url, $full);
 
         if (!preg_match('@(\/\?|(\.[a-zA-Z0-9]|\/)$)@', $url)) {

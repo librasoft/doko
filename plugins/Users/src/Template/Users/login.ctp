@@ -1,18 +1,24 @@
-<?= $this->Flash->render('auth') ?>
-<?= $this->Form->create() ?>
-	<fieldset>
-		<legend><?= __('Please enter your username and password') ?></legend>
-		<?= $this->Form->input('email') ?>
-		<?= $this->Form->input('password') ?>
-		<?= $this->Form->input('save_user_login', [
-			'type' => 'checkbox',
-		]) ?>
-	</fieldset>
-<p><?= $this->Html->link(__d('Users', 'Registration'), [
-	'action' => 'register',
-]) ?></p>
-<p><?= $this->Html->link(__d('Users', 'Forgot password?'), [
-	'action' => 'forgot',
-]) ?></p>
-<?= $this->Form->button(__('Login')) ?>
-<?= $this->Form->end() ?>
+<?php
+$title = __d('Users', 'Login');
+$this->set('title', $title);
+
+$canonical = [
+    'action' => 'login',
+];
+$this->Layout->setCanonical($canonical);
+$this->Html->addCrumb($title, $canonical);
+?>
+<ul class="nav nav-tabs">
+    <li class="active"><a href="<?= $this->Url->build([
+        'action' => 'login',
+    ]); ?>"><?= __d('Users', 'Login'); ?></a></li>
+    <?php if ($this->ACL->can('Users.Register')): ?>
+    <li><a href="<?= $this->Url->build([
+        'action' => 'register',
+    ]); ?>"><?= __d('Users', 'Register'); ?></a></li>
+    <?php endif; ?>
+</ul>
+
+<?= $this->element('login', [
+    'autofocus' => true,
+]); ?>

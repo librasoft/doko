@@ -14,7 +14,7 @@ class LanguageRegistry
 	public static $multilanguage_frontend;
 	public static $multilanguage_backend;
 	public static $multilanguage;
-    public static $stack = array();
+    public static $stack = [];
     public static $current;
     public static $current_frontend;
 
@@ -79,7 +79,7 @@ class LanguageRegistry
 
 		//Now set the Suggested language
 		if (!empty(self::$stack['URL'])) {
-			foreach (array('User', 'Request') as $param) {
+			foreach (['User', 'Request'] as $param) {
                 if (!empty(self::$stack[$param])) {
                     if (self::$stack[$param] !== self::$stack['URL']) {
                         self::$stack['Suggested'] = self::$stack[$param];
@@ -90,7 +90,7 @@ class LanguageRegistry
 		}
 
 		//At the end set Current language
-		foreach (array('URL', 'User', 'Request', 'Site') as $param) {
+		foreach (['URL', 'User', 'Request', 'Site'] as $param) {
 			if (!empty(self::$stack[$param])) {
                 self::$current = self::$stack[$param];
                 self::$current_frontend = in_array(self::$stack[$param], self::$frontend) ? self::$stack[$param] : current(self::$frontend);
