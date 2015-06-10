@@ -1,0 +1,39 @@
+{
+  "name": "doko",
+  "version": "1.0.0",
+  "description": "Build tasks for assets management and deploy",
+  "main": "Gulpfile.js",
+  "devDependencies": {
+    "del": "^1.2.0",
+    "fs": "^0.0.2",
+    "glob": "^5.0.10",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^2.3.1",
+    "gulp-changed": "^1.2.1",
+    "gulp-imagemin": "^2.2.1",
+    "gulp-include": "^1.1.1",
+    "gulp-less": "^3.0.3",
+    "gulp-minify-css": "^1.1.6",
+    "gulp-rename": "^1.2.2",
+    "gulp-size": "^1.2.1",
+    "gulp-uglify": "^1.2.0",
+    "merge-stream": "^0.1.7",
+    "minimist": "^1.1.1",
+    "path": "^0.11.14"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "doko",
+    "cakephp",
+    "less",
+    "js",
+    "img",
+    "font",
+    "themes",
+    "ftp"
+  ],
+  "author": "Librasoft <info@librasoftsnc.it>",
+  "license": "MIT"
+}

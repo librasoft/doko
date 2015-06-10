@@ -1,7 +1,6 @@
-// @prepros-append app/app.init.js
-// @prepros-append app/app.shutdown.js
+//= include app/app.init.js
+//= include app/app.shutdown.js
 
 doko.modules = {};
 
-
-// @prepros-append app/trigger.js
+//= include app/trigger.js

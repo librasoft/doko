@@ -1,20 +1,20 @@
-// @prepros-append vendor/wphone-viewport-hack.js
-// @prepros-append vendor/ios-viewport-scaling-bug-fix.js
+//= include vendor/wphone-viewport-hack.js
+//= include vendor/ios-viewport-scaling-bug-fix.js
 
-// @prepros-append vendor/bootstrap/transition.js
-// @prepros-append vendor/bootstrap/alert.js
-// @prepros-append vendor/bootstrap/button.js
-// @prepros-append vendor/bootstrap/dropdown.js
+//= include vendor/bootstrap/transition.js
+//= include vendor/bootstrap/alert.js
+//= include vendor/bootstrap/button.js
+//= include vendor/bootstrap/dropdown.js
 
-// @prepros-append vendor/fastclick.js
-// @prepros-append vendor/jquery.throttle-debounce.js
-// @prepros-append vendor/jquery.scrollUp.js
+//= include vendor/fastclick.js
+//= include vendor/jquery.throttle-debounce.js
+//= include vendor/jquery.scrollUp.js
 
-// @prepros-append vendor/mailcheck.js
-// @prepros-append vendor/doko.email.js
+//= include vendor/mailcheck.js
+//= include vendor/doko.email.js
 
-// @prepros-append vendor/jstimezone.js
+//= include vendor/jstimezone.js
 
-// @prepros-append vendor/jquery.complexify.banlist.js
-// @prepros-append vendor/jquery.complexify.js
-// @prepros-append vendor/doko.password.js
+//= include vendor/jquery.complexify.banlist.js
+//= include vendor/jquery.complexify.js
+//= include vendor/doko.password.js

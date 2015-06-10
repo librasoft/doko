@@ -10,7 +10,7 @@ use Cake\Core\Configure;
     echo $this->Layout->viewport();
     echo $this->Layout->documentMeta();
     echo $this->Html->css([
-        'app.css',
+        'app.min.css',
     ]);
     echo $this->fetch('css');
     echo $this->Html->script([
