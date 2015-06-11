@@ -163,23 +163,26 @@ var images_task = function () {
 
     return merge(tasks);
 };
-var fonts_task = function () {
+var other_task = function () {
     // we need to run one task for each theme
     // @see https://github.com/gulpjs/gulp/blob/master/docs/recipes/running-task-steps-per-folder.md
     var tasks = themes.map(function (theme) {
         return gulp.src([
-                '../themes/' + theme + '/webroot/font/**/*.{eot,svg,ttf,woff,woff2}'
+                '../themes/' + theme + '/webroot/**/*',
+                '!../themes/' + theme + '/webroot/less/**/*',
+                '!../themes/' + theme + '/webroot/js/**/*',
+                '!../themes/' + theme + '/webroot/img/**/*',
             ])
-            .pipe(changed('../webroot/theme/' + theme + '/font'))
-            .pipe(gulp.dest('../webroot/theme/' + theme + '/font'))
+            .pipe(changed('../webroot/theme/' + theme + '/'))
+            .pipe(gulp.dest('../webroot/theme/' + theme + '/'))
             .pipe(size({
                 showFiles: true,
-                title: theme + ' FONT'
+                title: theme + ' OTHER'
             }))
             .pipe(size({
                 showFiles: true,
                 gzip: true,
-                title: theme + ' FONT'
+                title: theme + ' OTHER'
             }));
     });
 
@@ -284,13 +287,13 @@ gulp.task('clean', ['themes-init'], function () {
 gulp.task('css', ['themes-init'], css_task);
 gulp.task('js', ['themes-init'], js_task);
 gulp.task('images', ['themes-init'], images_task);
-gulp.task('fonts', ['themes-init'], fonts_task);
+gulp.task('other', ['themes-init'], other_task);
 
 gulp.task('themes-css', ['themes-init'], css_task);
 gulp.task('themes-js', ['themes-css'], js_task);
 gulp.task('themes-images', ['themes-js'], images_task);
-gulp.task('themes-fonts', ['themes-images'], fonts_task);
-gulp.task('themes', ['themes-fonts']);
+gulp.task('themes-other', ['themes-images'], other_task);
+gulp.task('themes', ['themes-other']);
 
 gulp.task('watch', ['themes'], function () {
     themes.map(function (theme) {
@@ -304,8 +307,11 @@ gulp.task('watch', ['themes'], function () {
             '../themes/' + theme + '/webroot/img/**/*'
         ], ['images']);
         gulp.watch([
-            '../themes/' + theme + '/webroot/font/**/*.{eot,svg,ttf,woff,woff2}'
-        ], ['fonts']);
+            '../themes/' + theme + '/webroot/**/*',
+            '!../themes/' + theme + '/webroot/less/**/*',
+            '!../themes/' + theme + '/webroot/js/**/*',
+            '!../themes/' + theme + '/webroot/img/**/*',
+        ], ['other']);
     });
 });
 

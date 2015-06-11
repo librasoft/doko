@@ -3,12 +3,11 @@
 .new-font(@font-name, @font-file, @font-version: 1.0) {
 	@font-face {
 		font-family: "@{font-name}";
-		src: url('../font/@{font-file}.eot?v=@{font-version}'); /* IE9 Compat Modes */
-		src: url('../font/@{font-file}.eot?#iefix-@{font-version}') format('embedded-opentype'), /* IE6-IE8 */
-			 /*url('../font/@{font-file}.woff2?v=@{font-version}') format('woff2'),  Super Modern Browsers */
-			 url('../font/@{font-file}.woff?v=@{font-version}') format('woff'), /* Pretty Modern Browsers */
-			 url('../font/@{font-file}.ttf?v=@{font-version}')  format('truetype'), /* Safari, Android, iOS */
-			 url('../font/@{font-file}.svg?v=@{font-version}#@{font-name}') format('svg'); /* Legacy iOS */
+		src: url('../fonts/@{font-file}.eot?v=@{font-version}'); /* IE9 Compat Modes */
+		src: /*url('../fonts/@{font-file}.woff2?v=@{font-version}') format('woff2'),  Super Modern Browsers */
+			 url('../fonts/@{font-file}.woff?v=@{font-version}') format('woff'), /* Pretty Modern Browsers */
+			 url('../fonts/@{font-file}.ttf?v=@{font-version}')  format('truetype'), /* Safari, Android, iOS */
+			 url('../fonts/@{font-file}.svg?v=@{font-version}#@{font-name}') format('svg'); /* Legacy iOS */
 		font-weight: normal;
 		font-style: normal;
 	}
