@@ -1,4 +1,5 @@
 var gulp = require('gulp'),
+    plumber = require('gulp-plumber'),
     //GENERAL
     minimist = require('minimist'),
     fs = require('fs'),
@@ -42,6 +43,7 @@ var css_task = function () {
         less_leaves = build_import_leaves(less_leaves, '../themes/' + theme + '/webroot/less/**/*.less', /^\s*@import\s+['"]?((?!url\()[^'"]+)['"]?;/gmi);
 
         return gulp.src('../themes/' + theme + '/webroot/less/*.less')
+            .pipe(plumber())
             .pipe(changed('../webroot/theme/' + theme + '/css', {
                 extension: '.css',
                 hasChanged: function (stream, callback, sourceFile, destPath) {
@@ -96,6 +98,7 @@ var js_task = function () {
         js_leaves = build_import_leaves(js_leaves, '../themes/' + theme + '/webroot/js/**/*.js', /^[\/\s#]*?=\s*?(?:(?:require|include)(?:_tree|_directory)?)\s+(.*$)/gmi);
 
         return gulp.src('../themes/' + theme + '/webroot/js/*.js')
+            .pipe(plumber())
             .pipe(changed('../webroot/theme/' + theme + '/js', {
                 extension: '.js',
                 hasChanged: function (stream, callback, sourceFile, destPath) {
@@ -143,6 +146,7 @@ var images_task = function () {
         return gulp.src([
                 '../themes/' + theme + '/webroot/img/**/*'
             ])
+            .pipe(plumber())
             .pipe(changed('../webroot/theme/' + theme + '/img'))
             .pipe(imagemin({
                 interlaced: true,
@@ -173,6 +177,7 @@ var other_task = function () {
                 '!../themes/' + theme + '/webroot/js/**/*',
                 '!../themes/' + theme + '/webroot/img/**/*',
             ])
+            .pipe(plumber())
             .pipe(changed('../webroot/theme/' + theme + '/'))
             .pipe(gulp.dest('../webroot/theme/' + theme + '/'))
             .pipe(size({
