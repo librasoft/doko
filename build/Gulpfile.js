@@ -67,7 +67,7 @@ var css_task = function () {
             .pipe(gulp.dest('../webroot/theme/' + theme + '/css'))
             .pipe(size({
                 showFiles: true,
-                title: 'CSS'
+                title: theme + ' CSS'
             }))
             .pipe(minifyCSS({
                 skip_import: true
@@ -78,12 +78,12 @@ var css_task = function () {
             .pipe(gulp.dest('../webroot/theme/' + theme + '/css'))
             .pipe(size({
                 showFiles: true,
-                title: 'CSS'
+                title: theme + ' CSS'
             }))
             .pipe(size({
                 showFiles: true,
                 gzip: true,
-                title: 'CSS'
+                title: theme + ' CSS'
             }));
     });
 
@@ -116,7 +116,7 @@ var js_task = function () {
             .pipe(gulp.dest('../webroot/theme/' + theme + '/js'))
             .pipe(size({
                 showFiles: true,
-                title: 'JS'
+                title: theme + ' JS'
             }))
             .pipe(uglify())
             .pipe(rename(function (path) {
@@ -125,12 +125,12 @@ var js_task = function () {
             .pipe(gulp.dest('../webroot/theme/' + theme + '/js'))
             .pipe(size({
                 showFiles: true,
-                title: 'JS'
+                title: theme + ' JS'
             }))
             .pipe(size({
                 showFiles: true,
                 gzip: true,
-                title: 'JS'
+                title: theme + ' JS'
             }));
     });
 
@@ -152,12 +152,12 @@ var images_task = function () {
             .pipe(gulp.dest('../webroot/theme/' + theme + '/img'))
             .pipe(size({
                 showFiles: true,
-                title: 'IMG'
+                title: theme + ' IMG'
             }))
             .pipe(size({
                 showFiles: true,
                 gzip: true,
-                title: 'IMG'
+                title: theme + ' IMG'
             }));
     });
 
@@ -174,12 +174,12 @@ var fonts_task = function () {
             .pipe(gulp.dest('../webroot/theme/' + theme + '/font'))
             .pipe(size({
                 showFiles: true,
-                title: 'FONT'
+                title: theme + ' FONT'
             }))
             .pipe(size({
                 showFiles: true,
                 gzip: true,
-                title: 'FONT'
+                title: theme + ' FONT'
             }));
     });
 
@@ -190,24 +190,27 @@ var build_import_leaves = function (leaves, globPath, regexp) {
         tree = {};
 
     files.map(function (file) {
-        var filepath = path.resolve(__dirname, file),
+        var filePath = path.resolve(__dirname, file),
             fileContent = fs.readFileSync(file, 'utf8'),
             matches = regexp.exec(fileContent),
             node,
-            nodeStat;
+            fileStat = fs.statSync(filePath),
+            nodeStat,
+            mtime;
 
         while (matches !== null) {
             node = path.resolve(path.dirname(file), matches[1]);
-            tree = resolve_leaves(tree, [filepath], node);
+            tree = resolve_leaves(tree, [filePath], node);
             nodeStat = fs.statSync(node);
+            mtime = fileStat.mtime > nodeStat.mtime ? fileStat.mtime : nodeStat.mtime;
 
             for (var i in tree[node]) {
                 if (leaves[tree[node][i]]) {
-                    if (leaves[tree[node][i]] < nodeStat.mtime) {
-                        leaves[tree[node][i]] = nodeStat.mtime;
+                    if (leaves[tree[node][i]] < mtime) {
+                        leaves[tree[node][i]] = mtime;
                     }
                 } else {
-                    leaves[tree[node][i]] = nodeStat.mtime;
+                    leaves[tree[node][i]] = mtime;
                 }
             }
 

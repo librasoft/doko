@@ -41,23 +41,23 @@ class AppController extends Controller
      */
     public function initialize()
     {
-		if (!$this->theme) {
+        if (!$this->theme) {
             $this->loadTheme(Configure::read('Doko.Frontend.theme'));
-		}
+        }
 
         $this->loadComponent('Languages');
         $this->loadComponent('Form');
-		$this->loadComponent('Csrf');
-		$this->loadComponent('Security');
+        $this->loadComponent('Csrf');
+        $this->loadComponent('Security');
         $this->loadComponent('Flash');
-		$this->loadComponent('RequestHandler');
-		$this->dispatchEvent('Controller.hookComponents');
+        $this->loadComponent('RequestHandler');
+        $this->dispatchEvent('Controller.hookComponents');
     }
 
-	/**
-	 * Loads the chosen theme.
-	 */
-	public function loadTheme($theme) {
+    /**
+     * Loads the chosen theme.
+     */
+    public function loadTheme($theme) {
         if ($this->theme === $theme) {
             return;
         }
@@ -65,12 +65,12 @@ class AppController extends Controller
         Plugin::load($theme, [
             'autoload' => true,
             'path' => ROOT . DS . 'themes' . DS,
-			'bootstrap' => true,
-			'routes' => true,
-			'ignoreMissing' => true,
-		]);
-		$this->theme = $theme;
-	}
+            'bootstrap' => true,
+            'routes' => true,
+            'ignoreMissing' => true,
+        ]);
+        $this->theme = $theme;
+    }
 
     public function beforeRedirect(Event $event, $url, Response $response)
     {
