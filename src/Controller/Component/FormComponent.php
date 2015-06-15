@@ -82,7 +82,6 @@ class FormComponent extends Component
             foreach ($data as $key => $val) {
                 $data[$key] = $this->_clean($val);
             }
-
             return $data;
         }
 
@@ -92,7 +91,6 @@ class FormComponent extends Component
             $purifier = new HTMLPurifier($config);
             $data = $purifier->purify($data);
         }
-
         return $data;
     }
 }

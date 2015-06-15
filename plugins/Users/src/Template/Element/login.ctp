@@ -11,6 +11,7 @@
         'type' => 'email',
         'label' => __d('Users', 'Email'),
         'autofocus' => !empty($autofocus),
+        'required' => true,
         'tabindex' => 1,
         'data-mailcheck' => __d('Users', 'Do you mean {{suggestion}}?'),
     ]) ?>
@@ -18,6 +19,7 @@
         'type' => 'password',
         'label' => __d('Users', 'Password'),
         'value' => '',
+        'required' => true,
         'tabindex' => 2,
 		'between' => $this->Html->tag('p', $this->Html->link(__d('Users', 'Can’t remember'), [
 			'plugin' => 'Users',

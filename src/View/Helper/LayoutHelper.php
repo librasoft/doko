@@ -149,7 +149,7 @@ class LayoutHelper extends Helper
      */
     public function title($sep = '|')
     {
-        $title = strip_tags($this->_View->fetch('title'));
+        $title = strip_tags($this->_View->get('title'));
 
         if (!$title) {
             $title = Configure::read('Doko.Frontend.title');

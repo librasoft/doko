@@ -6,7 +6,7 @@ use Cake\Auth\DefaultPasswordHasher;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\I18n\I18n;
-use Cake\Network\Email\Email;
+use Cake\Mailer\MailerAwareTrait;
 use Cake\Network\Exception\BadRequestException;
 use Crud\Controller\ControllerTrait;
 use Users\Controller\AppController;
@@ -22,6 +22,7 @@ class UsersController extends AppController
 {
 
     use ControllerTrait;
+    use MailerAwareTrait;
 
     public function initialize()
     {
@@ -371,17 +372,10 @@ class UsersController extends AppController
                 I18n::locale($event->subject()->entity->language);
             }
 
-            $email = new Email('default');
-            $email
-                ->to($event->subject()->entity->email)
-                ->subject(__d('Users', 'Confirm email address'))
-                ->template('Users.register')
-                ->viewVars([
-                    'item' => $event->subject()->entity,
-                    'token' => $this->security_token,
-                ])
-                ->helpers($this->helpers)
-                ->send();
+            $this->getMailer('Users.User')->send('confirmEmail', [
+                $event->subject()->entity,
+                $this->security_token,
+            ]);
         }
 
         if ($event->subject()->success && !$event->subject()->created) {

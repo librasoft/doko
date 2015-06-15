@@ -32,6 +32,7 @@ Router::scope('/', function($routes) {
 	$routes->connect('/login', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login']);
 	$routes->connect('/logout', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'logout']);
 	$routes->connect('/register', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'register']);
+	$routes->connect('/confirm/*', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'confirm']);
 	$routes->connect('/forgot-password', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'forgot']);
 	$routes->connect('/reset-password/*', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'reset']);
 	$routes->connect('/clear-logins', ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'clear_logins']);
