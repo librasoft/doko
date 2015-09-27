@@ -24,36 +24,19 @@ DROP TABLE IF EXISTS `blocks`;
 CREATE TABLE IF NOT EXISTS `blocks` (
   `id` int(10) unsigned NOT NULL,
   `status` tinyint(2) unsigned NOT NULL,
-  `region_id` int(10) unsigned NOT NULL,
+  `language` varchar(10) NOT NULL,
+  `region` varchar(100) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `body` text NOT NULL,
-  `element` varchar(100) NOT NULL,
-  `element_options` text NOT NULL,
-  `css_class` varchar(255) NOT NULL,
+  `body` text,
+  `element` varchar(100),
+  `element_options` text,
+  `css_class` varchar(255),
   `show_title` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `visibility_roles` text NOT NULL,
-  `visibility_paths` text NOT NULL,
-  `parent_id` int(10) unsigned DEFAULT NULL,
+  `acl_token` varchar(255),
+  `parent_id` int(10) unsigned,
+  `level` tinyint(2) unsigned NOT NULL,
   `lft` int(10) unsigned NOT NULL,
   `rght` int(10) unsigned NOT NULL,
-  `modified` datetime NOT NULL,
-  `created` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `blocks_regions`
---
-
-DROP TABLE IF EXISTS `blocks_regions`;
-CREATE TABLE IF NOT EXISTS `blocks_regions` (
-  `id` int(10) unsigned NOT NULL,
-  `status` varchar(2) NOT NULL,
-  `language` varchar(5) NOT NULL,
-  `alias` varchar(20) NOT NULL,
-  `visibility_roles` text NOT NULL,
-  `visibility_paths` text NOT NULL,
   `modified` datetime NOT NULL,
   `created` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -85,15 +68,16 @@ CREATE TABLE IF NOT EXISTS `menus_links` (
   `id` int(10) unsigned NOT NULL,
   `status` tinyint(2) unsigned NOT NULL,
   `menu_id` int(10) unsigned NOT NULL,
-  `parent_id` int(10) unsigned NOT NULL,
+  `parent_id` int(10) unsigned,
   `title` varchar(255) NOT NULL,
   `url` varchar(255) NOT NULL,
-  `css_class` varchar(255) NOT NULL,
-  `rel` varchar(255) NOT NULL,
+  `css_class` varchar(255),
+  `rel` varchar(255),
   `target_blank` tinyint(1) NOT NULL,
-  `icon` varchar(255) NOT NULL,
-  `element` varchar(255) NOT NULL,
-  `element_options` text NOT NULL,
+  `icon` varchar(255),
+  `element` varchar(255),
+  `element_options` text,
+  `acl_token` varchar(255),
   `level` tinyint(2) unsigned NOT NULL,
   `lft` int(10) unsigned NOT NULL,
   `rght` int(10) unsigned NOT NULL,
@@ -114,11 +98,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   `role` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `description` text NOT NULL,
+  `description` text,
   `language` varchar(10) NOT NULL,
   `timezone` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `security_token` varchar(255) NOT NULL,
+  `security_token` varchar(255),
   `modified` datetime NOT NULL,
   `created` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -146,13 +130,7 @@ CREATE TABLE IF NOT EXISTS `users_saved_logins` (
 -- Indexes for table `blocks`
 --
 ALTER TABLE `blocks`
-  ADD PRIMARY KEY (`id`), ADD KEY `region_status_lft` (`region_id`,`status`,`lft`);
-
---
--- Indexes for table `blocks_regions`
---
-ALTER TABLE `blocks_regions`
-  ADD PRIMARY KEY (`id`), ADD KEY `lang_status` (`language`,`status`);
+  ADD PRIMARY KEY (`id`), ADD KEY `lang_region_status_lft` (`language`,`region`,`status`,`lft`);
 
 --
 -- Indexes for table `menus`
@@ -186,11 +164,6 @@ ALTER TABLE `users_saved_logins`
 -- AUTO_INCREMENT for table `blocks`
 --
 ALTER TABLE `blocks`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `blocks_regions`
---
-ALTER TABLE `blocks_regions`
   MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `menus`

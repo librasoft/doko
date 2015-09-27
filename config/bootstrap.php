@@ -159,3 +159,7 @@ foreach ($plugins as $plugin) {
 DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
+
+Plugin::load('Menus', ['bootstrap' => false, 'routes' => true]);
+
+Plugin::load('Blocks', ['bootstrap' => false, 'routes' => true]);

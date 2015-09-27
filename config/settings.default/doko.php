@@ -3,6 +3,8 @@ $doko = [
     'Plugins' => [
 //        'DebugKit',
         'Users',
+        'Menus',
+        'Blocks',
     ],
     'Frontend' => [
         'title' => 'Doko CMS',
