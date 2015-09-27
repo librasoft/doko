@@ -2,13 +2,15 @@
 .doko-a-forgot,
 .doko-a-reset-password,
 .doko-a-register {
+    .main {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 	.main-title {
 		.sr-only();
 	}
-	@media (min-width: 350px) {
+	@media (min-width: 370px) {
 		.main {
-			border-left: 1px solid @hr-border;
-			border-right: 1px solid @hr-border;
 			margin: 0 auto;
 			width: 350px;
 		}
@@ -17,8 +19,11 @@
 .login-form,
 .register-form {
 	.container();
+    background: #fff;
+    border-radius: 2px;
+    padding-top: 0.5em;
 
-	@media (min-width: 350px) {
+	@media (min-width: 370px) {
 		width: 350px;
 	}
 }

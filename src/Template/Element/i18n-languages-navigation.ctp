@@ -34,7 +34,7 @@ foreach ($languages_links as $language => $link) {
     }
 
     if ($options['mode'] === 'dropdown') {
-        $title .= sprintf(' (%s)', mb_convert_case(locale_get_display_language($language), MB_CASE_TITLE, 'utf-8'));
+        $title .= sprintf(' <small>(%s)</small>', mb_convert_case(locale_get_display_language($language), MB_CASE_TITLE, 'utf-8'));
     }
 
     $languages_nav[] = [

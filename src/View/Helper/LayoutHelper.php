@@ -516,7 +516,7 @@ class LayoutHelper extends Helper
                 $item['link']['options'] = !empty($item['link']['options']) ? $item['link']['options'] : [];
                 $item['link']['options']['class'] = !empty($item['link']['options']['class']) ? $item['link']['options']['class'] : '';
 
-                if ($options['mode'] === 'dropdown' && !empty($item['children'])) {
+                if ($options['mode'] === 'dropdown' && !empty($item['children']) && $level === 0) {
                     $item['link']['title'] .= ' <span class="caret"></span>';
                     $item['link']['options']['class'] .= ' dropdown-toggle';
                     $item['link']['options']['data-toggle'] = 'dropdown';

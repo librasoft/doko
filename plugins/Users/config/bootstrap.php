@@ -5,7 +5,7 @@ use Cake\Cache\Cache;
 use Cake\Event\Event;
 use Cake\Event\EventManager;
 
-EventManager::instance()->on('Controller.hookComponents', function (Event $event) {
+EventManager::instance()->on('Controller.hook', function (Event $event) {
 	$event->subject()->loadComponent('Auth', [
 		'authenticate' => [
 			'all' => [
@@ -13,13 +13,15 @@ EventManager::instance()->on('Controller.hookComponents', function (Event $event
 			],
 			'Form',
 		],
-		'flash' => ['element' => 'default', 'key' => 'auth', 'params' => ['class' => 'error']],
-		'loginAction' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login'],
+		'flash' => ['element' => 'default', 'key' => 'auth', 'params' => ['class' => 'info']],
+		'loginAction' => ['prefix' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'login'],
 		'loginRedirect' => '/',
-		'logoutRedirect' => ['plugin' => 'Users', 'controller' => 'Users', 'action' => 'login'],
+		'logoutRedirect' => ['prefix' => false, 'plugin' => 'Users', 'controller' => 'Users', 'action' => 'login'],
 	]);
 	$event->subject()->loadComponent('Users.Login');
 	$event->subject()->loadComponent('Users.ACL');
+
+	$event->subject()->viewBuilder()->helpers(['Users.ACL']);
 
 	// Allow all by default. We'll use Auth/ACL to check permissions.
 	$event->subject()->Auth->allow();

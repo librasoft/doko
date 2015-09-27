@@ -18,5 +18,4 @@ class RouteBuilder extends BaseRouteBuilder
         parent::connect($route, $defaults, $options);
     }
 
-
 }

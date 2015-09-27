@@ -1,5 +1,7 @@
 var gulp = require('gulp'),
+	gutil = require('gulp-util'),
     plumber = require('gulp-plumber'),
+	notify = require('gulp-notify'),
     //GENERAL
     minimist = require('minimist'),
     fs = require('fs'),
@@ -15,6 +17,7 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     //IMG
     imagemin = require('gulp-imagemin'),
+	tinypng = require('gulp-tinypng-compress'),
     //LESS
     less = require('gulp-less'),
     autoprefixer = require('gulp-autoprefixer'),
@@ -43,7 +46,7 @@ var css_task = function () {
         less_leaves = build_import_leaves(less_leaves, '../themes/' + theme + '/webroot/less/**/*.less', /^\s*@import\s+['"]?((?!url\()[^'"]+)['"]?;/gmi);
 
         return gulp.src('../themes/' + theme + '/webroot/less/*.less')
-            .pipe(plumber())
+			.pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
             .pipe(changed('../webroot/theme/' + theme + '/css', {
                 extension: '.css',
                 hasChanged: function (stream, callback, sourceFile, destPath) {
@@ -72,7 +75,8 @@ var css_task = function () {
                 title: theme + ' CSS'
             }))
             .pipe(minifyCSS({
-                skip_import: true
+				keepSpecialComments: 0,
+				processImport: false
             }))
             .pipe(rename(function (path) {
                 path.basename = path.basename.replace('.full', '.min');
@@ -86,6 +90,12 @@ var css_task = function () {
                 showFiles: true,
                 gzip: true,
                 title: theme + ' CSS'
+			}))
+			.pipe(notify({
+				'title': 'CSS task completed',
+				'subtitle': theme,
+				'message': 'Last file processed: <%= file.relative %>',
+				'onLast': true
             }));
     });
 
@@ -98,7 +108,7 @@ var js_task = function () {
         js_leaves = build_import_leaves(js_leaves, '../themes/' + theme + '/webroot/js/**/*.js', /^[\/\s#]*?=\s*?(?:(?:require|include)(?:_tree|_directory)?)\s+(.*$)/gmi);
 
         return gulp.src('../themes/' + theme + '/webroot/js/*.js')
-            .pipe(plumber())
+			.pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
             .pipe(changed('../webroot/theme/' + theme + '/js', {
                 extension: '.js',
                 hasChanged: function (stream, callback, sourceFile, destPath) {
@@ -134,10 +144,44 @@ var js_task = function () {
                 showFiles: true,
                 gzip: true,
                 title: theme + ' JS'
+			}))
+			.pipe(notify({
+				'title': 'JS task completed',
+				'subtitle': theme,
+				'message': 'Last file processed: <%= file.relative %>',
+				'onLast': true
             }));
     });
 
     return merge(tasks);
+};
+var tinypng_task = function () {
+	// scan doko settings to find deploy settings
+	var fileContent = fs.readFileSync('../config/settings/doko.php', 'utf8'),
+		apikey = /'tinypng'\s*=>\s*'([^']*)'/gmi.exec(fileContent);
+
+	if (!apikey) {
+		return;
+	}
+
+	// we need to run one task for each theme
+	// @see https://github.com/gulpjs/gulp/blob/master/docs/recipes/running-task-steps-per-folder.md
+	var tasks = themes.map(function (theme) {
+		return gulp.src([
+				'../themes/' + theme + '/webroot/img/**/*.{jpg,jpeg,png}'
+			])
+			.pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
+			.pipe(tinypng({
+				key: apikey[1],
+				sigFile: '../tmp/.tinypng-sigs',
+				sameDest: true,
+				summarize: true,
+				log: true
+			}))
+			.pipe(gulp.dest('../themes/' + theme + '/webroot/img'));
+	});
+
+	return merge(tasks);
 };
 var images_task = function () {
     // we need to run one task for each theme
@@ -146,7 +190,7 @@ var images_task = function () {
         return gulp.src([
                 '../themes/' + theme + '/webroot/img/**/*'
             ])
-            .pipe(plumber())
+			.pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
             .pipe(changed('../webroot/theme/' + theme + '/img'))
             .pipe(imagemin({
                 interlaced: true,
@@ -162,6 +206,12 @@ var images_task = function () {
                 showFiles: true,
                 gzip: true,
                 title: theme + ' IMG'
+			}))
+			.pipe(notify({
+				'title': 'Images task completed',
+				'subtitle': theme,
+				'message': 'Last file processed: <%= file.relative %>',
+				'onLast': true
             }));
     });
 
@@ -177,7 +227,7 @@ var other_task = function () {
                 '!../themes/' + theme + '/webroot/js/**/*',
                 '!../themes/' + theme + '/webroot/img/**/*',
             ])
-            .pipe(plumber())
+			.pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
             .pipe(changed('../webroot/theme/' + theme + '/'))
             .pipe(gulp.dest('../webroot/theme/' + theme + '/'))
             .pipe(size({
@@ -188,6 +238,12 @@ var other_task = function () {
                 showFiles: true,
                 gzip: true,
                 title: theme + ' OTHER'
+			}))
+			.pipe(notify({
+				'title': 'Other files task completed',
+				'subtitle': theme,
+				'message': 'Last file processed: <%= file.relative %>',
+				'onLast': true
             }));
     });
 
@@ -209,18 +265,22 @@ var build_import_leaves = function (leaves, globPath, regexp) {
         while (matches !== null) {
             node = path.resolve(path.dirname(file), matches[1]);
             tree = resolve_leaves(tree, [filePath], node);
-            nodeStat = fs.statSync(node);
-            mtime = fileStat.mtime > nodeStat.mtime ? fileStat.mtime : nodeStat.mtime;
+			try {
+                nodeStat = fs.statSync(node);
+                mtime = fileStat.mtime > nodeStat.mtime ? fileStat.mtime : nodeStat.mtime;
 
-            for (var i in tree[node]) {
-                if (leaves[tree[node][i]]) {
-                    if (leaves[tree[node][i]] < mtime) {
+                for (var i in tree[node]) {
+                    if (leaves[tree[node][i]]) {
+                        if (leaves[tree[node][i]] < mtime) {
+                            leaves[tree[node][i]] = mtime;
+                        }
+                    } else {
                         leaves[tree[node][i]] = mtime;
                     }
-                } else {
-                    leaves[tree[node][i]] = mtime;
                 }
-            }
+			} catch (e) {
+				console.log(node + ' does not exists.');
+			}
 
             matches = regexp.exec(fileContent);
         }
@@ -265,9 +325,16 @@ gulp.task('themes-init', function () {
         }
     }
 
+	var u = {};
     var stats;
 
     for (var i in t) {
+		//skip repeated themes
+		if (u.hasOwnProperty(t[i])) {
+			continue;
+		}
+		u[t[i]] = 1;
+
         try {
             stats = fs.lstatSync('../themes/' + t[i] + '/webroot/');
 
@@ -291,12 +358,14 @@ gulp.task('clean', ['themes-init'], function () {
 
 gulp.task('css', ['themes-init'], css_task);
 gulp.task('js', ['themes-init'], js_task);
-gulp.task('images', ['themes-init'], images_task);
+gulp.task('tinypng', ['themes-init'], tinypng_task);
+gulp.task('images', ['tinypng'], images_task);
 gulp.task('other', ['themes-init'], other_task);
 
 gulp.task('themes-css', ['themes-init'], css_task);
 gulp.task('themes-js', ['themes-css'], js_task);
-gulp.task('themes-images', ['themes-js'], images_task);
+gulp.task('themes-tinypng', ['themes-js'], tinypng_task);
+gulp.task('themes-images', ['themes-tinypng'], images_task);
 gulp.task('themes-other', ['themes-images'], other_task);
 gulp.task('themes', ['themes-other']);
 

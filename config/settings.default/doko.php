@@ -12,10 +12,8 @@ $doko = [
         'robots' => null,
         'theme' => 'DokoFrontend',
         'theme-color' => null,
-        'logo' => [
-            'width' => 270,
-            'height' => 100,
-        ],
+        'logo-width' => 270,
+        'logo-height' => 100,
         'status' => true,
         'languages' => [
             'en', 'it',
@@ -24,29 +22,30 @@ $doko = [
     'Owner' => [
         'email' => 'info@doko-cms.it',
         'copyright' => 'www.Doko-CMS.it',
-        'legal_name' => 'Librasoft snc',
-        'legal_address' => 'Via della Luna, 13 - 47034 Forlimpopoli (FC)',
+        'legal-name' => 'Librasoft snc',
+        'legal-address' => 'Via della Luna, 13 - 47034 Forlimpopoli (FC)',
         'phone' => '+39 0543 424612',
         'fax' => '+39 0543 424612',
-        'vat_code' => '03961040403',
-        'fiscal_code' => '03961040403',
+        'vat-code' => '03961040403',
+        'fiscal-code' => '03961040403',
     ],
     'Services' => [
+        'tinypng' => '',
         'analytics' => [
 //            'GoogleAnalytics' => '',
         ],
     ],
     'Backend' => [
         'home-url' => '/admin/',
-        'theme' => 'DokoAdmin',
+        'theme' => 'DokoBackend',
         'languages' => [
             'it',
         ],
     ],
     'Profile' => [
         'theme' => 'DokoProfile',
-        'password_min_length' => 8,
-        'password_strength_factor' => 0.6,
+        'password-min-length' => 8,
+        'password-strength-factor' => 0.6,
     ],
     'I18n' => [
         'default-timezone' => 'Europe/Rome',

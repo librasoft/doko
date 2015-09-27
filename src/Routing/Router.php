@@ -4,7 +4,6 @@ namespace App\Routing;
 
 use App\I18n\LanguageRegistry;
 use App\Routing\RouteBuilder;
-use Cake\Core\Configure;
 use Cake\Routing\Router as BaseRouter;
 
 class Router extends BaseRouter

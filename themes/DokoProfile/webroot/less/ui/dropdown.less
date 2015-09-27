@@ -1,16 +1,18 @@
 .dropdown-menu {
+    border: 0;
 	border-radius: 1px;
 	margin-top: 0;
 	padding: 0;
 
 	> li {
-		border-bottom: 1px solid @hr-border;
-		border-top: 1px solid @hr-border;
 		margin-top: -1px;
 
 		a {
 			padding: 0.5em 1em;
 
+            small {
+                color: @text-muted;
+            }
 			&:hover,
 			&:focus {
 				background: transparent;

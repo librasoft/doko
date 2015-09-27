@@ -140,7 +140,7 @@ Request::addDetector('tablet', function ($request) {
  * Load Plugins
  */
 $plugins = array_merge([
-    'Migrations',
+//    'Migrations',
     'Crud',
 ], Configure::read('Doko.Plugins'));
 

@@ -41,7 +41,7 @@ class AppController extends Controller
      */
     public function initialize()
     {
-        if (!$this->theme) {
+        if (!$this->viewBuilder()->theme()) {
             $this->loadTheme(Configure::read('Doko.Frontend.theme'));
         }
 
@@ -51,14 +51,15 @@ class AppController extends Controller
         $this->loadComponent('Security');
         $this->loadComponent('Flash');
         $this->loadComponent('RequestHandler');
-        $this->dispatchEvent('Controller.hookComponents');
+
+        $this->dispatchEvent('Controller.hook');
     }
 
     /**
      * Loads the chosen theme.
      */
     public function loadTheme($theme) {
-        if ($this->theme === $theme) {
+        if ($this->viewBuilder()->theme() === $theme) {
             return;
         }
 
@@ -69,7 +70,7 @@ class AppController extends Controller
             'routes' => true,
             'ignoreMissing' => true,
         ]);
-        $this->theme = $theme;
+        $this->viewBuilder()->theme($theme);
     }
 
     public function beforeRedirect(Event $event, $url, Response $response)
