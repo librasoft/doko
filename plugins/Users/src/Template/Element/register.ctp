@@ -1,7 +1,6 @@
 <?php
 use Cake\Core\Configure;
 ?>
-<?= $this->Flash->render('auth') ?>
 <?= $this->Form->create($user, [
 	'honeypot' => true,
     'url' => [
@@ -11,6 +10,8 @@ use Cake\Core\Configure;
     ],
     'class' => 'register-form',
 ]) ?>
+    <?= $this->Flash->render() ?>
+    <?= $this->Flash->render('auth') ?>
 	<p class="help-block"><?= __d('Users', 'The symbol <i>*</i> indicates that the field is required.') ?></p>
     <?= $this->Form->input('name', [
         'type' => 'text',

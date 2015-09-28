@@ -53,7 +53,6 @@ use Cake\Core\Configure;
     <div class="middle">
         <main id="main" class="main" role="main">
             <h2 class="main-title"><?= $this->fetch('title'); ?></h2>
-            <?= $this->Flash->render(); ?>
             <?= $this->fetch('content'); ?>
         </main>
     </div>

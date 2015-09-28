@@ -1,4 +1,3 @@
-<?= $this->Flash->render('auth') ?>
 <?= $this->Form->create(null, [
     'url' => [
         'plugin' => 'Users',
@@ -7,6 +6,8 @@
     ],
     'class' => 'login-form',
 ]) ?>
+    <?= $this->Flash->render() ?>
+    <?= $this->Flash->render('auth') ?>
     <?= $this->Form->input('email', [
         'type' => 'email',
         'label' => __d('Users', 'Email'),
