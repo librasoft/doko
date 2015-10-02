@@ -2,8 +2,6 @@
 
 namespace App\I18n;
 
-use Cake\Network\Session;
-
 class LanguageRegistry
 {
 
@@ -16,9 +14,9 @@ class LanguageRegistry
 	public static $multilanguage;
     public static $stack = [];
     public static $current;
-    public static $current_frontend;
+    public static $ui;
 
-    public static function init($frontend, $backend)
+    public static function init($frontend, $backend, $request = null)
     {
 		//Step 0: Get all available languages for the site.
 		$url = env('REQUEST_URI');
@@ -26,84 +24,103 @@ class LanguageRegistry
 
 		self::$frontend = $frontend;
 		self::$backend = $backend;
-        self::$languages = self::${$location};
+        self::$languages = self::$frontend;
 
 		self::$multilanguage_frontend = (count(self::$frontend) > 1);
 		self::$multilanguage_backend = (count(self::$backend) > 1);
-		self::$multilanguage = (count(self::$languages) > 1);
+		self::$multilanguage = self::$multilanguage_frontend;
 
-        $haystack = array_flip(self::$languages);
+        $frontend_haystack = array_flip(self::$frontend);
+        $backend_haystack = array_flip(self::$backend);
 
-		//Step 1: Check for url param.
-		preg_match('#\/(' . implode('|', self::$languages) . ')\/#', $url, $url_lang);
+		//Check for url param.
+		preg_match('#\/(' . implode('|', self::$frontend) . ')\/#', $url, $url_lang);
 		if (!empty($url_lang[1])) {
             self::$stack['URL'] = $url_lang[1];
 		}
 
-		//Step 2: Check for user preference.
-        $user_lang = (new Session())->read(self::$sessionAuthKey . '.language');
-		if ($user_lang) {
-			if (isset($haystack[$user_lang])) {
-				self::$stack['User'] = $user_lang;
-			}
-		}
-
-		//Step 3: Check for request preference.
-		$http_accept_language = self::parseAcceptWithQualifier(env('HTTP_ACCEPT_LANGUAGE'));
-        $found = false;
-        foreach ($http_accept_language as $http_part) {
-            foreach ($http_part as $request_lang) {
-                if (isset($haystack[$request_lang])) {
-                    self::$stack['Request'] = $request_lang;
-                    $found = true;
-                    break 2;
-                }
+		//Check for user preference.
+        if ($request) {
+            $user_lang = $request->session()->read(self::$sessionAuthKey . '.language');
+            if ($user_lang) {
+                self::$stack['User'] = $user_lang;
             }
         }
-        if (!$found) {
+
+		//Check for site settings.
+		if (!empty(self::$frontend)) {
+            self::$stack['Frontend'] = current(self::$frontend);
+		}
+		if (!empty(self::$backend)) {
+            self::$stack['Backend'] = current(self::$backend);
+		}
+
+        if ($location === 'frontend') {
+            //Check for request preference.
+            $http_accept_language = self::parseAcceptWithQualifier(env('HTTP_ACCEPT_LANGUAGE'));
+            $found = false;
             foreach ($http_accept_language as $http_part) {
                 foreach ($http_part as $request_lang) {
-                    $request_lang = substr($request_lang, 0, 2);
-                    if (isset($haystack[$request_lang])) {
+                    if (isset($frontend_haystack[$request_lang])) {
                         self::$stack['Request'] = $request_lang;
+                        $found = true;
                         break 2;
                     }
                 }
             }
-        }
-
-		//Step 4: Check for site settings.
-		if (!empty(self::$languages)) {
-            self::$stack['Site'] = current(self::$languages);
-		}
-
-		//Now set the Suggested language
-		if (!empty(self::$stack['URL'])) {
-			foreach (['User', 'Request'] as $param) {
-                if (!empty(self::$stack[$param])) {
-                    if (self::$stack[$param] !== self::$stack['URL']) {
-                        self::$stack['Suggested'] = self::$stack[$param];
+            if (!$found) {
+                foreach ($http_accept_language as $http_part) {
+                    foreach ($http_part as $request_lang) {
+                        $request_lang = substr($request_lang, 0, 2);
+                        if (isset($frontend_haystack[$request_lang])) {
+                            self::$stack['Request'] = $request_lang;
+                            break 2;
+                        }
                     }
+                }
+            }
+
+            //Set the Suggested language
+            if (!empty(self::$stack['URL'])) {
+                foreach (['User', 'Request'] as $param) {
+                    if (!empty(self::$stack[$param]) && isset($frontend_haystack[self::$stack[$param]])) {
+                        if (self::$stack[$param] !== self::$stack['URL']) {
+                            self::$stack['Suggested'] = self::$stack[$param];
+                        }
+                        break;
+                    }
+                }
+            }
+
+            //Set Current language
+            foreach (['URL', 'User', 'Request', 'Frontend'] as $param) {
+                if (!empty(self::$stack[$param]) && isset($frontend_haystack[self::$stack[$param]])) {
+                    self::$current = self::$ui = self::$stack[$param];
+                    return;
+                }
+            }
+        } else { //Backend
+            //Set Current languages
+            foreach (['URL', 'User', 'Frontend'] as $param) {
+                if (!empty(self::$stack[$param]) && isset($frontend_haystack[self::$stack[$param]])) {
+                    self::$current = self::$stack[$param];
                     break;
                 }
-			}
-		}
-
-		//At the end set Current language
-		foreach (['URL', 'User', 'Request', 'Site'] as $param) {
-			if (!empty(self::$stack[$param])) {
-                self::$current = self::$stack[$param];
-                self::$current_frontend = in_array(self::$stack[$param], self::$frontend) ? self::$stack[$param] : current(self::$frontend);
-				return;
-			}
-		}
+            }
+            foreach (['User', 'Backend'] as $param) {
+                if (!empty(self::$stack[$param]) && isset($backend_haystack[self::$stack[$param]])) {
+                    self::$ui = self::$stack[$param];
+                    return;
+                }
+            }
+        }
     }
 
     public static function parseAcceptWithQualifier($header)
     {
         $accept = [];
-        $header = explode(',', $header);
-        foreach (array_filter($header) as $value) {
+        $header = array_filter(explode(',', $header));
+        foreach ($header as $value) {
             $prefValue = '1.0';
             $value = trim($value);
 

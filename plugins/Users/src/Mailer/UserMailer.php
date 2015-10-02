@@ -10,24 +10,26 @@ class UserMailer extends Mailer
 
     public function confirmEmail($user, $security_token)
     {
-        $this->transport('default');
-        $this->from(Configure::read('Doko.Owner.email'));
-        $this->subject(__d('Users', '{0}, confirm your email address', $user->name));
-        $this->to($user->email);
-        $this->layout('default');
-        $this->template('Users.confirm_address');
-        $this->set(compact('user', 'security_token'));
+        $this
+            ->transport('default')
+            ->from(Configure::read('Doko.Owner.email'))
+            ->subject(__d('Users', '{0}, confirm your email address', $user->name))
+            ->to($user->email)
+            ->layout('default')
+            ->template('Users.confirm_address')
+            ->set(compact('user', 'security_token'));
     }
 
     public function resetPassword($user, $security_token)
     {
-        $this->transport('default');
-        $this->from(Configure::read('Doko.Owner.email'));
-        $this->subject(__d('Users', '{0}, reset your password', $user->name));
-        $this->to($user->email);
-        $this->layout('default');
-        $this->template('Users.reset_password');
-        $this->set(compact('user', 'security_token'));
+        $this
+            ->transport('default')
+            ->from(Configure::read('Doko.Owner.email'))
+            ->subject(__d('Users', '{0}, reset your password', $user->name))
+            ->to($user->email)
+            ->layout('default')
+            ->template('Users.reset_password')
+            ->set(compact('user', 'security_token'));
     }
 
 }

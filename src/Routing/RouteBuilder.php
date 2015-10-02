@@ -10,10 +10,8 @@ class RouteBuilder extends BaseRouteBuilder
 
     public function connect($route, array $defaults = [], array $options = [])
     {
-        if (LanguageRegistry::$multilanguage) {
-            if (empty($options['language'])) {
-                $options['language'] = implode('|', LanguageRegistry::$languages);
-            }
+        if (empty($options['language']) && LanguageRegistry::$multilanguage) {
+            $options['language'] = implode('|', LanguageRegistry::$languages);
         }
         parent::connect($route, $defaults, $options);
     }

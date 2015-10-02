@@ -50,6 +50,7 @@ use Cake\Error\ErrorHandler;
 use Cake\Log\Log;
 use Cake\Mailer\Email;
 use Cake\Network\Request;
+use Cake\Network\Response;
 use Cake\Routing\DispatcherFactory;
 use Cake\Utility\Hash;
 use Cake\Utility\Security;
@@ -81,9 +82,11 @@ if (!Configure::read('debug')) {
  */
 $isCli = php_sapi_name() === 'cli';
 if ($isCli) {
+    $request = null;
     (new ConsoleErrorHandler(Configure::read('Error')))->register();
     require __DIR__ . '/bootstrap_cli.php';
 } else {
+    $request = Request::createFromGlobals();
     (new ErrorHandler(Configure::read('Error')))->register();
 }
 
@@ -92,8 +95,8 @@ ConnectionManager::config(Configure::consume('Datasources'));
 Log::config(Configure::consume('Log'));
 Security::salt(Configure::consume('Security.salt'));
 
-LanguageRegistry::init(Configure::read('Doko.Frontend.languages'), Configure::read('Doko.Backend.languages'));
-ini_set('intl.default_locale', LanguageRegistry::$current);
+LanguageRegistry::init(Configure::read('Doko.Frontend.languages'), Configure::read('Doko.Backend.languages'), $request);
+locale_set_default(LanguageRegistry::$ui);
 date_default_timezone_set(Configure::read('Doko.I18n.default-timezone'));
 
 if (Configure::read('Doko.I18n.' . LanguageRegistry::$current)) {
@@ -160,6 +163,10 @@ DispatcherFactory::add('Asset');
 DispatcherFactory::add('Routing');
 DispatcherFactory::add('ControllerFactory');
 
-Plugin::load('Menus', ['bootstrap' => false, 'routes' => true]);
-
-Plugin::load('Blocks', ['bootstrap' => false, 'routes' => true]);
+if (!$isCli) {
+    $dispatcher = DispatcherFactory::create();
+    $dispatcher->dispatch(
+        $request,
+        new Response()
+    );
+}

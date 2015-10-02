@@ -25,13 +25,3 @@ if (php_sapi_name() === 'cli-server') {
     }
 }
 require dirname(__DIR__) . '/config/bootstrap.php';
-
-use Cake\Network\Request;
-use Cake\Network\Response;
-use Cake\Routing\DispatcherFactory;
-
-$dispatcher = DispatcherFactory::create();
-$dispatcher->dispatch(
-    Request::createFromGlobals(),
-    new Response()
-);

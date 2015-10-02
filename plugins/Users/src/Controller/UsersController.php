@@ -64,7 +64,7 @@ class UsersController extends AppController
             return;
         }
         if (!$is_ajax && $this->Auth->user()) {
-            return $this->redirect($this->referer($this->Auth->config('loginRedirect')));
+            return $this->redirect($this->Auth->config('loginRedirect'));
         }
         if ($this->request->is('post')) {
             $event_before = $this->dispatchEvent('Controller.userLoginBefore');

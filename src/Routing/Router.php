@@ -25,10 +25,8 @@ class Router extends BaseRouter
             'extensions' => static::$_defaultExtensions
         ]);
 
-        if (LanguageRegistry::$multilanguage) {
-            $i18n_path = '/:language' . $path;
-            $i18n_params = $params;
-            $builder->scope($i18n_path, $i18n_params, $callback);
+        if (LanguageRegistry::$multilanguage_frontend) {
+            $builder->scope('/:language' . $path, $params, $callback);
         }
 
         $builder->scope($path, $params, $callback);
