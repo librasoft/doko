@@ -161,14 +161,10 @@ class UsersController extends AppController
             $token = $item->generateToken();
 
             if ($this->{$modelClass}->save($item)) {
-                $email = new Email('default');
-                $email
-                    ->to($item->email)
-                    ->subject(__d('Users', 'Password recovery'))
-                    ->template('Users.forgot')
-                    ->viewVars(compact('item', 'token'))
-                    ->helpers($this->helpers)
-                    ->send();
+                $this->getMailer('Users.User')->send('resetPassword', [
+                    $item,
+                    $token,
+                ]);
 
                 $this->Flash->success(__d('Users', 'Check your email and follow instructions'));
                 return $this->redirect($this->Auth->config('loginAction'));
