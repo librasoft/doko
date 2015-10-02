@@ -29,7 +29,6 @@ class LayoutHelper extends Helper
         return LanguageRegistry::$current;
     }
 
-
     /**
      * Sets a list of css classes for the current html document.
      *
@@ -475,7 +474,7 @@ class LayoutHelper extends Helper
      * 			'title'		=> link title
      * 			'url'		=> link url
      * 			'options'	=> link options
-     * 			'confirm'	=> link confirm alert
+     *      'acl_token' => acl token to have to see current item (and it's children)
      * 		'options'	=> options for the current item
      * 		'children'	=> item's children
      *
@@ -497,6 +496,9 @@ class LayoutHelper extends Helper
         $options['class'] .= ' level-' . ($level + 1);
 
         foreach ($items as $item) {
+            if (!empty($item['acl_token']) && !$this->ACL->can($item['acl_token'])) {
+                continue;
+            }
             $item_output = null;
 
             $item['options'] = !empty($item['options']) ? $item['options'] : [];

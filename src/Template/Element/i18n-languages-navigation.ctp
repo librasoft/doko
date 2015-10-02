@@ -1,5 +1,7 @@
 <?php
 
+use App\I18n\LanguageRegistry;
+
 $_defaults = [
 	'label' => '',
 	'class' => '',
@@ -10,7 +12,7 @@ $_defaults = [
 
 $options = isset($options) ? $options + $_defaults : $_defaults;
 
-if (!$options['force'] && !App\I18n\LanguageRegistry::$multilanguage) {
+if (!$options['force'] && !LanguageRegistry::$multilanguage) {
     return;
 }
 
@@ -18,7 +20,7 @@ $languages_links = $this->Layout->getLanguagesLinks();
 $languages_nav = [];
 
 foreach ($languages_links as $language => $link) {
-    $is_current = $language === App\I18n\LanguageRegistry::$current;
+    $is_current = $language === LanguageRegistry::$current;
     if ($is_current && $options['mode'] !== 'plain') {
         continue;
     }
@@ -53,7 +55,7 @@ foreach ($languages_links as $language => $link) {
 }
 
 if ($options['mode'] === 'dropdown') {
-    $language = App\I18n\LanguageRegistry::$current;
+    $language = LanguageRegistry::$current;
     $title = mb_convert_case(locale_get_display_language($language), MB_CASE_TITLE, 'utf-8');
 
     switch ($options['titles']) {

@@ -8,6 +8,8 @@
             )
         ?></li>
         <li><?= $this->Html->link(__('List Menus'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('List Links'), ['controller' => 'MenusLinks', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Link'), ['controller' => 'MenusLinks', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="menus form large-9 medium-8 columns content">

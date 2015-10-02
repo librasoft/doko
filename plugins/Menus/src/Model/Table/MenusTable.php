@@ -30,6 +30,12 @@ class MenusTable extends Table
 
         $this->addBehavior('Timestamp');
 
+        $this->hasMany('Links', [
+            'className' => 'Menus.MenusLinks',
+            'foreignKey' => 'menu_id',
+            'dependent' => true,
+            'cascadeCallbacks' => true,
+        ]);
     }
 
     /**
