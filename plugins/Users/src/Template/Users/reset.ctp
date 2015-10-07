@@ -44,8 +44,8 @@ $this->Html->addCrumb($title, $canonical);
     ]) ?>
     <div class="form-actions">
         <?= $this->Form->button(__d('Users', 'Save and Enter'), [
-			'type' => 'submit',
-			'class' => 'btn btn-primary btn-submit',
+            'type' => 'submit',
+            'class' => 'btn btn-primary btn-submit',
         ]) ?>
     </div>
 <?= $this->Form->end() ?>

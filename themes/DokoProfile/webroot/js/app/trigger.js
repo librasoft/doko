@@ -1,17 +1,17 @@
 +function ($, doko) { "use strict";
 
-	doko.init();
+    doko.init();
 
-	var triggers = $('html').data('js');
+    var triggers = $('html').data('js');
 
-	for (var i in triggers) {
-		for (var j in triggers[i]) {
-			if (typeof doko.modules[i + '-' + triggers[i][j]] === 'function') {
-				doko.modules[i + '-' + triggers[i][j]]();
-			}
-		}
-	}
+    for (var i in triggers) {
+        for (var j in triggers[i]) {
+            if (typeof doko.modules[i + '-' + triggers[i][j]] === 'function') {
+                doko.modules[i + '-' + triggers[i][j]]();
+            }
+        }
+    }
 
-	doko.shutdown();
+    doko.shutdown();
 
 }(jQuery, doko);

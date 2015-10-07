@@ -3,8 +3,8 @@
 use App\I18n\LanguageRegistry;
 
 $_defaults = [
-	'label' => '',
-	'class' => '',
+    'label' => '',
+    'class' => '',
     'force' => false,
     'mode' => 'dropdown', //possible values: dropdown, plain, plain-no-current
     'titles' => 'normal', //possible values: normal, 2-letters, 3-letters
@@ -86,9 +86,9 @@ if ($options['mode'] === 'dropdown') {
 }
 
 if (!empty($options['label'])) {
-	echo $options['label'];
+    echo $options['label'];
 }
 echo $this->Layout->nestedList($languages_nav, [
-	'mode' => 'dropdown',
-	'class' => 'nav nav-languages' . ($options['class'] ? ' ' . $options['class'] : ''),
+    'mode' => 'dropdown',
+    'class' => 'nav nav-languages' . ($options['class'] ? ' ' . $options['class'] : ''),
 ]);

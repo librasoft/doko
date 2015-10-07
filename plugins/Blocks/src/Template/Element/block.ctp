@@ -5,14 +5,14 @@ $defaults = [
 $options = isset($options) ? $options + $defaults : $defaults;
 ?>
 <div class="block <?= $block->css_class ?>">
-	<?php
-	if ($block->show_title) {
-		echo $this->Html->tag($options['title-tag'], $block->title, array(
-			'class' => 'block-title',
-		));
-	}
-	?>
-	<div class="block-body"><?php
+    <?php
+    if ($block->show_title) {
+        echo $this->Html->tag($options['title-tag'], $block->title, [
+            'class' => 'block-title',
+        ]);
+    }
+    ?>
+    <div class="block-body"><?php
     echo $block->body;
 
     if ($block->element) {

@@ -1,5 +1,5 @@
 +function ($, doko) { "use strict";
 
-	doko.shutdown = function () {};
+    doko.shutdown = function () {};
 
 }(jQuery, doko);

@@ -69,7 +69,7 @@ class RegionsHelper extends Helper
     {
         $list = [];
         foreach ($items as $item) {
-			$list[] = [
+            $list[] = [
                 'element' => [
                     'name' => 'Blocks.block',
                     'data' => [
@@ -78,7 +78,7 @@ class RegionsHelper extends Helper
                     ],
                 ],
                 'acl_token' => $item->acl_token,
-			];
+            ];
         }
         return $list;
     }

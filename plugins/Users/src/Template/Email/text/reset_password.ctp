@@ -4,10 +4,10 @@
 
 
 <?= $this->Url->build([
-	'prefix' => false,
-	'plugin' => 'Users',
-	'controller' => 'Users',
-	'action' => 'reset',
-	$user->id,
-	$security_token,
+    'prefix' => false,
+    'plugin' => 'Users',
+    'controller' => 'Users',
+    'action' => 'reset',
+    $user->id,
+    $security_token,
 ]);

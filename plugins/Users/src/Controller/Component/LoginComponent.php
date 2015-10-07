@@ -27,7 +27,7 @@ class LoginComponent extends Component
      *
      * @var array
      */
-	public $components = ['Auth', 'Cookie', 'Flash'];
+    public $components = ['Auth', 'Cookie', 'Flash'];
 
     /**
      * Events supported by this component.

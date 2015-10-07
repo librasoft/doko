@@ -1,78 +1,78 @@
 .header {
-	text-align: center;
+    text-align: center;
 }
 .header-title {
-	background: @brand-primary;
-	color: #fff;
-	display: inline-block;
-	letter-spacing: -0.1em;
-	line-height: 0.8;
-	margin: 2.5em 0.25em 0.75em;
-	padding: 0.25em 0.35em;
-	text-align: center;
-	text-transform: uppercase;
+    background: @brand-primary;
+    color: #fff;
+    display: inline-block;
+    letter-spacing: -0.1em;
+    line-height: 0.8;
+    margin: 2.5em 0.25em 0.75em;
+    padding: 0.25em 0.35em;
+    text-align: center;
+    text-transform: uppercase;
 }
 .back-home {
-	border: 0;
-	border-radius: 0 0 0.1em 0;
-	color: inherit;
-	display: inline-block;
-	left: 0;
-	padding: 0.5em 0.5em;
-	position: absolute;
-	top: 0;
-	transition: 0.25s ease;
+    border: 0;
+    border-radius: 0 0 0.1em 0;
+    color: inherit;
+    display: inline-block;
+    left: 0;
+    padding: 0.5em 0.5em;
+    position: absolute;
+    top: 0;
+    transition: 0.25s ease;
 
-	&:before {
-		.icon();
-		.icons-prepend(0.5em);
-		.icon-arrow-back();
-		font-size: 1.25em;
-		line-height: @line-height-computed;
-		vertical-align: middle;
-	}
-	&:hover,
-	&:focus {
-		background: transparent;
-		text-decoration: none;
-	}
+    &:before {
+        .icon();
+        .icons-prepend(0.5em);
+        .icon-arrow-back();
+        font-size: 1.25em;
+        line-height: @line-height-computed;
+        vertical-align: middle;
+    }
+    &:hover,
+    &:focus {
+        background: transparent;
+        text-decoration: none;
+    }
 }
 .nav-languages {
-	position: absolute;
-	right: 0;
-	top: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
 
-	.dropdown-toggle {
-		border: 0;
-		border-radius: 0 0 0 0.1em;
-		color: inherit;
-		padding: 0.5em 0.5em;
-		transition: 0.25s ease;
+    .dropdown-toggle {
+        border: 0;
+        border-radius: 0 0 0 0.1em;
+        color: inherit;
+        padding: 0.5em 0.5em;
+        transition: 0.25s ease;
 
-		&:before {
-			.icon();
-			.icons-prepend(0.5em);
-			.icon-i18n();
-			font-size: 1.25em;
-			line-height: @line-height-computed;
-			vertical-align: middle;
-		}
-		&:hover,
-		&:focus {
-			background: transparent;
-			color: @link-hover-color;
-		}
-	}
-	.open .dropdown-toggle {
-		&,
-		&:hover,
-		&:focus {
-			background: transparent;
-			color: @link-hover-color;
-		}
-	}
-	.dropdown-menu {
-		left: auto;
-		right: 0;
-	}
+        &:before {
+            .icon();
+            .icons-prepend(0.5em);
+            .icon-i18n();
+            font-size: 1.25em;
+            line-height: @line-height-computed;
+            vertical-align: middle;
+        }
+        &:hover,
+        &:focus {
+            background: transparent;
+            color: @link-hover-color;
+        }
+    }
+    .open .dropdown-toggle {
+        &,
+        &:hover,
+        &:focus {
+            background: transparent;
+            color: @link-hover-color;
+        }
+    }
+    .dropdown-menu {
+        left: auto;
+        right: 0;
+    }
 }

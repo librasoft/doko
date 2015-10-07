@@ -1,51 +1,51 @@
 .checkbox {
-	input[type="checkbox"] {
-		.sr-only();
-		margin-left: 0;
+    input[type="checkbox"] {
+        .sr-only();
+        margin-left: 0;
 
-		+ label {
-			padding: 0;
+        + label {
+            padding: 0;
 
-			&:before {
-				.box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
-				.square(1.2em);
-				.transition(~"border-color ease-in-out .15s, box-shadow ease-in-out .15s");
-				border: 1px solid @input-border;
-				border-radius: @input-border-radius;
-				content: ' ';
-				display: inline-block;
-				margin-bottom: 0.1em;
-				margin-right: 0.5em;
-				vertical-align: middle;
-			}
-			&:after {
-				.transition(width .1s ease);
-				.icon();
-				.icon-checked();
-				color: @brand-primary;
-				font-size: 1.75em;
-				left: 0;
-				line-height: @line-height-computed;
-				overflow: hidden;
-				position: absolute;
-				top: -0.1em;
-				width: 0;
-			}
-		}
-		&:focus + label,
-		+ label:hover {
-			&:before {
-				@color-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
-				.box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 4px @{color-rgba}");
-				border-color: @input-border-focus;
-			}
-		}
-		&:checked {
-			+ label {
-				&:after {
-					width: 1em;
-				}
-			}
-		}
-	}
+            &:before {
+                .box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+                .square(1.2em);
+                .transition(~"border-color ease-in-out .15s, box-shadow ease-in-out .15s");
+                border: 1px solid @input-border;
+                border-radius: @input-border-radius;
+                content: ' ';
+                display: inline-block;
+                margin-bottom: 0.1em;
+                margin-right: 0.5em;
+                vertical-align: middle;
+            }
+            &:after {
+                .transition(width .1s ease);
+                .icon();
+                .icon-checked();
+                color: @brand-primary;
+                font-size: 1.75em;
+                left: 0;
+                line-height: @line-height-computed;
+                overflow: hidden;
+                position: absolute;
+                top: -0.1em;
+                width: 0;
+            }
+        }
+        &:focus + label,
+        + label:hover {
+            &:before {
+                @color-rgba: rgba(red(@input-border-focus), green(@input-border-focus), blue(@input-border-focus), .6);
+                .box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 4px @{color-rgba}");
+                border-color: @input-border-focus;
+            }
+        }
+        &:checked {
+            + label {
+                &:after {
+                    width: 1em;
+                }
+            }
+        }
+    }
 }

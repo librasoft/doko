@@ -6,40 +6,40 @@ class LanguageRegistry
 {
 
     public static $sessionAuthKey = 'Auth.User';
-	public static $frontend;
-	public static $backend;
-	public static $languages;
-	public static $multilanguage_frontend;
-	public static $multilanguage_backend;
-	public static $multilanguage;
+    public static $frontend;
+    public static $backend;
+    public static $languages;
+    public static $multilanguage_frontend;
+    public static $multilanguage_backend;
+    public static $multilanguage;
     public static $stack = [];
     public static $current;
     public static $ui;
 
     public static function init($frontend, $backend, $request = null)
     {
-		//Step 0: Get all available languages for the site.
-		$url = env('REQUEST_URI');
-		$location = preg_match('#\/admin\/#', $url) ? 'backend' : 'frontend';
+        //Step 0: Get all available languages for the site.
+        $url = env('REQUEST_URI');
+        $location = preg_match('#\/admin\/#', $url) ? 'backend' : 'frontend';
 
-		self::$frontend = $frontend;
-		self::$backend = $backend;
+        self::$frontend = $frontend;
+        self::$backend = $backend;
         self::$languages = self::$frontend;
 
-		self::$multilanguage_frontend = (count(self::$frontend) > 1);
-		self::$multilanguage_backend = (count(self::$backend) > 1);
-		self::$multilanguage = self::$multilanguage_frontend;
+        self::$multilanguage_frontend = (count(self::$frontend) > 1);
+        self::$multilanguage_backend = (count(self::$backend) > 1);
+        self::$multilanguage = self::$multilanguage_frontend;
 
         $frontend_haystack = array_flip(self::$frontend);
         $backend_haystack = array_flip(self::$backend);
 
-		//Check for url param.
-		preg_match('#\/(' . implode('|', self::$frontend) . ')\/#', $url, $url_lang);
-		if (!empty($url_lang[1])) {
+        //Check for url param.
+        preg_match('#\/(' . implode('|', self::$frontend) . ')\/#', $url, $url_lang);
+        if (!empty($url_lang[1])) {
             self::$stack['URL'] = $url_lang[1];
-		}
+        }
 
-		//Check for user preference.
+        //Check for user preference.
         if ($request) {
             $user_lang = $request->session()->read(self::$sessionAuthKey . '.language');
             if ($user_lang) {
@@ -47,13 +47,13 @@ class LanguageRegistry
             }
         }
 
-		//Check for site settings.
-		if (!empty(self::$frontend)) {
+        //Check for site settings.
+        if (!empty(self::$frontend)) {
             self::$stack['Frontend'] = current(self::$frontend);
-		}
-		if (!empty(self::$backend)) {
+        }
+        if (!empty(self::$backend)) {
             self::$stack['Backend'] = current(self::$backend);
-		}
+        }
 
         if ($location === 'frontend') {
             //Check for request preference.
@@ -140,9 +140,9 @@ class LanguageRegistry
                 $accept[$prefValue] = [];
             }
             if ($prefValue) {
-				if (strpos($value, '_')) {
-					$value = str_replace('_', '-', $value);
-				}
+                if (strpos($value, '_')) {
+                    $value = str_replace('_', '-', $value);
+                }
                 $accept[$prefValue][] = strtolower($value);
             }
         }

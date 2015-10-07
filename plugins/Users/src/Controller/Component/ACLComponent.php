@@ -21,7 +21,7 @@ class ACLComponent extends Component
      *
      * @var array
      */
-	public $components = ['Auth', 'Security', 'Users.Login'];
+    public $components = ['Auth', 'Security', 'Users.Login'];
 
     /**
      * Instance of the Controller object

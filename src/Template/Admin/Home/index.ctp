@@ -1,4 +1,4 @@
-ciao <?php
+<?php
 
 echo \App\I18n\LanguageRegistry::$ui;
 echo ' - ';

@@ -21,7 +21,7 @@ $this->Html->addCrumb($title, $canonical);
 <?= $this->Form->create(null, [
     'class' => 'login-form',
 ]) ?>
-	<p class="help-block"><?php echo __d('Users', 'Please enter your email: we will send you the instructions to choose a new password.'); ?></p>
+    <p class="help-block"><?php echo __d('Users', 'Please enter your email: we will send you the instructions to choose a new password.'); ?></p>
     <?= $this->Form->input('email', [
         'type' => 'email',
         'label' => __d('Users', 'Email'),
@@ -31,8 +31,8 @@ $this->Html->addCrumb($title, $canonical);
     ]) ?>
     <div class="form-actions">
         <?= $this->Form->button(__d('Users', 'Submit'), [
-			'type' => 'submit',
-			'class' => 'btn btn-primary btn-submit',
+            'type' => 'submit',
+            'class' => 'btn btn-primary btn-submit',
         ]) ?>
     </div>
 <?= $this->Form->end() ?>

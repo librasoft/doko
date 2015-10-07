@@ -187,10 +187,10 @@ class LayoutHelper extends Helper
      * Set a meta for the current html document.
      *
      * Available types:
-     * - meta		<meta name="$meta" content="$content">
-     * - link		<link rel="$meta" href="$content">
-     * - property	<meta property="$meta" content="$content">
-     * - lang		<link rel="alternate" hreflang="$meta" href="$content">
+     * - meta <meta name="$meta" content="$content">
+     * - link <link rel="$meta" href="$content">
+     * - property <meta property="$meta" content="$content">
+     * - lang <link rel="alternate" hreflang="$meta" href="$content">
      *
      * @param string|array $meta
      * @param string $content
@@ -306,8 +306,8 @@ class LayoutHelper extends Helper
             'og:site_name' => Configure::read('Site.title'),
             'og:locale' => LanguageRegistry::$current,
             // Twitter Card
-//			'twitter:card' => 'summary',
-//			'twitter:site' => !empty($contacts['socials']['twitter'][0]) ? preg_replace('#https?://(www.)?twitter.com/#', '@', $contacts['socials']['twitter'][0]) : false,
+// 'twitter:card' => 'summary',
+// 'twitter:site' => !empty($contacts['socials']['twitter'][0]) ? preg_replace('#https?://(www.)?twitter.com/#', '@', $contacts['socials']['twitter'][0]) : false,
         ]);
 
         // Type lang
@@ -402,7 +402,7 @@ class LayoutHelper extends Helper
             'webroot' => rtrim($this->request->webroot, '/'),
             'themeroot' => $this->request->webroot . 'theme/' . $this->theme . '/',
             'imgroot' => $this->request->webroot . 'theme/' . $this->theme . '/img/',
-            'params'	=> $url_params,
+            'params' => $url_params,
         ] + (array) $this->_View->get('JsVars');
 
         return "\n\t" . $this->Html->tag('script', 'var doko={"vars":' . json_encode($js) . '}');
@@ -467,17 +467,17 @@ class LayoutHelper extends Helper
     /**
      * Returns a nested html list of items with a standard structure.
      * $item's structure:
-     * 		'element'	=> render element with given:
-     * 			'name'		=> element name
-     * 			'data'		=> element data
-     * 			'options'	=> element options
-     * 		'link'		=> render link with given:
-     * 			'title'		=> link title
-     * 			'url'		=> link url
-     * 			'options'	=> link options
+     *  'element' => render element with given:
+     *  'name' => element name
+     *  'data' => element data
+     *  'options' => element options
+     *  'link' => render link with given:
+     *  'title' => link title
+     *  'url' => link url
+     *  'options' => link options
      *      'acl_token' => acl token to have to see current item (and it's children)
-     * 		'options'	=> options for the current item
-     * 		'children'	=> item's children
+     *  'options' => options for the current item
+     *  'children' => item's children
      *
      * @param array $items
      * @param array $options

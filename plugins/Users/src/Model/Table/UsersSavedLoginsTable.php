@@ -27,7 +27,7 @@ class UsersSavedLoginsTable extends Table
     /**
      * Prune all the records with the given conditions.
      *
-     * @param integer $user_id	the owner id of the saved sessions
+     * @param integer $user_id the owner id of the saved sessions
      * @param string $time_limit for purging only the records before the given date
      * @return boolean
      */

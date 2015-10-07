@@ -1,40 +1,40 @@
 .off-canvas-left,
 .off-canvas-left-transition {
-	overflow-x: hidden;
+    overflow-x: hidden;
 
-	body {
-		.backface-visibility(hidden);
-		.transition(.2s ease-out);
-		overflow: visible!important;
-		will-change: -webkit-transform;
-		will-change: transform;
-	}
+    body {
+        .backface-visibility(hidden);
+        .transition(.2s ease-out);
+        overflow: visible!important;
+        will-change: -webkit-transform;
+        will-change: transform;
+    }
 }
 .off-canvas-left {
-	body {
-		.mz-no-csstransforms& {
-			left: 250px;
-			position: relative;
-		}
-		.mz-csstransforms& {
-			.translate(250px, 0);
-		}
-	}
+    body {
+        .mz-no-csstransforms& {
+            left: 250px;
+            position: relative;
+        }
+        .mz-csstransforms& {
+            .translate(250px, 0);
+        }
+    }
 }
 @media (min-width: @screen-sm-min) {
-	.off-canvas-left,
-	.off-canvas-left-transition {
-		overflow-x: visible;
-	}
-	.off-canvas-left {
-		body {
-			.mz-no-csstransforms& {
-				left: 0;
-				position: static;
-			}
-			.mz-csstransforms& {
-				.transform(none);
-			}
-		}
-	}
+    .off-canvas-left,
+    .off-canvas-left-transition {
+        overflow-x: visible;
+    }
+    .off-canvas-left {
+        body {
+            .mz-no-csstransforms& {
+                left: 0;
+                position: static;
+            }
+            .mz-csstransforms& {
+                .transform(none);
+            }
+        }
+    }
 }

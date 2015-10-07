@@ -4,11 +4,11 @@
 
 
 <?= $this->Url->build([
-	'prefix' => false,
-	'plugin' => 'Users',
-	'controller' => 'Users',
-	'action' => 'confirm',
-	$user->id,
-	$security_token,
-	1, // to save login
+    'prefix' => false,
+    'plugin' => 'Users',
+    'controller' => 'Users',
+    'action' => 'confirm',
+    $user->id,
+    $security_token,
+    1, // to save login
 ]);

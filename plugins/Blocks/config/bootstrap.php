@@ -12,5 +12,5 @@ EventManager::instance()->on('Controller.hook', function (Event $event) {
     }
     $event->subject()->viewBuilder()->helpers(['Blocks.Regions']);
 
-	return true;
+    return true;
 });

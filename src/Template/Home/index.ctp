@@ -8,7 +8,7 @@ $this->set('skip-breadcrumb', true);
 
 //echo $this->element('home-hero');
 
-$this->assign('middle-append', $this->Regions->sidebar('home', array(
+$this->assign('middle-append', $this->Regions->sidebar('home', [
     'offcanvas-button' => false,
-	'title-tag' => 'h2',
-)));
+    'title-tag' => 'h2',
+]));

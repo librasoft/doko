@@ -13,46 +13,46 @@ var Mailcheck = {
   topLevelThreshold: 3,
 
     defaultDomains: ["yahoo.com", "google.com", "hotmail.com", "gmail.com", "me.com", "aol.com", "mac.com",
-		"live.com", "comcast.net", "googlemail.com", "msn.com", "hotmail.co.uk", "yahoo.co.uk",
-		"facebook.com", "verizon.net", "sbcglobal.net", "att.net", "gmx.com", "mail.com", "outlook.com", "icloud.com",
-		// ITALIAN - by librasoft
-		"libero.it", "dominioweb.org", "inwind.it", "telecom.it", "iol.it", "interfree.it", "blu.it",
-		"vodafone.it", "kataweb.it", "ciaoweb.it", "email.it", "tele2.it", "supereva.it", "interbusiness.it",
-		"yahoo.it", "supereva.it", "poste.it", "jumpy.it", "fastweb.it", "infinito.it", "lycos.it",
-		"monrif.net", "galactica.it", "elitel.it", "atlavia.it", "cheapnet.it", "ulisse.it", "191.it",
-		"tim.it", "alice.it", "rossoalice.it", "virgilio.it", "everyday.com", "omnitel.it", "vodafone.it",
-		"albacom.it", "atlavia.it", "caltanet.it", "cheapnet.it", "elitel.biz", "email.it", "excite.it",
-		"hotpop.com", "internetlibero.it", "klik.it", "lillinet.org", "lombardiacom.it", "mclink.it",
-		"monrif.net", "neomedia.it", "net4free.it", "ngi.it", "nopay.it", "poste.it", "postino.it",
-		"protocol.it", "rimini.com", "sailor.it", "softhome.net", "inet.it", "worldonline.it", "tiscali.it",
-		/* Other global domains */
-		"email.com", "games.com" /* AOL */, "gmx.net", "hush.com", "hushmail.com", "inbox.com",
-		"lavabit.com", "love.com" /* AOL */, "pobox.com", "rocketmail.com" /* Yahoo */,
-		"safe-mail.net", "wow.com" /* AOL */, "ygm.com" /* AOL */, "ymail.com" /* Yahoo */, "zoho.com",
-		/* United States ISP domains */
-		"bellsouth.net", "charter.net", "cox.net", "earthlink.net", "juno.com",
-		/* British ISP domains */
-		"btinternet.com", "virginmedia.com", "blueyonder.co.uk", "freeserve.co.uk", "live.co.uk",
-		"ntlworld.com", "o2.co.uk", "orange.net", "sky.com", "talktalk.co.uk", "tiscali.co.uk",
-		"virgin.net", "wanadoo.co.uk", "bt.com",
-		/* Chinese ISP domains */
-		"sina.com", "qq.com",
-		/* French ISP domains */
-		"hotmail.fr", "live.fr", "laposte.net", "yahoo.fr", "wanadoo.fr", "orange.fr", "gmx.fr", "sfr.fr", "neuf.fr", "free.fr",
-		/* German ISP domains */
-		"gmx.de", "hotmail.de", "live.de", "online.de", "t-online.de" /* T-Mobile */, "web.de", "yahoo.de",
-		/* Russian ISP domains */
-		"mail.ru", "rambler.ru", "yandex.ru",
-		/* Belgian ISP domains */
-		"hotmail.be", "live.be", "skynet.be", "voo.be", "tvcablenet.be",
-		/* Argentinian ISP domains */
-		"hotmail.com.ar", "live.com.ar", "yahoo.com.ar", "fibertel.com.ar", "speedy.com.ar", "arnet.com.ar",
-		/* Domains used in Mexico */
-		"yahoo.com.mx", "live.com.mx", "hotmail.es", "hotmail.com.mx", "prodigy.net.mx"
-	  ],
+        "live.com", "comcast.net", "googlemail.com", "msn.com", "hotmail.co.uk", "yahoo.co.uk",
+        "facebook.com", "verizon.net", "sbcglobal.net", "att.net", "gmx.com", "mail.com", "outlook.com", "icloud.com",
+        // ITALIAN - by librasoft
+        "libero.it", "dominioweb.org", "inwind.it", "telecom.it", "iol.it", "interfree.it", "blu.it",
+        "vodafone.it", "kataweb.it", "ciaoweb.it", "email.it", "tele2.it", "supereva.it", "interbusiness.it",
+        "yahoo.it", "supereva.it", "poste.it", "jumpy.it", "fastweb.it", "infinito.it", "lycos.it",
+        "monrif.net", "galactica.it", "elitel.it", "atlavia.it", "cheapnet.it", "ulisse.it", "191.it",
+        "tim.it", "alice.it", "rossoalice.it", "virgilio.it", "everyday.com", "omnitel.it", "vodafone.it",
+        "albacom.it", "atlavia.it", "caltanet.it", "cheapnet.it", "elitel.biz", "email.it", "excite.it",
+        "hotpop.com", "internetlibero.it", "klik.it", "lillinet.org", "lombardiacom.it", "mclink.it",
+        "monrif.net", "neomedia.it", "net4free.it", "ngi.it", "nopay.it", "poste.it", "postino.it",
+        "protocol.it", "rimini.com", "sailor.it", "softhome.net", "inet.it", "worldonline.it", "tiscali.it",
+        /* Other global domains */
+        "email.com", "games.com" /* AOL */, "gmx.net", "hush.com", "hushmail.com", "inbox.com",
+        "lavabit.com", "love.com" /* AOL */, "pobox.com", "rocketmail.com" /* Yahoo */,
+        "safe-mail.net", "wow.com" /* AOL */, "ygm.com" /* AOL */, "ymail.com" /* Yahoo */, "zoho.com",
+        /* United States ISP domains */
+        "bellsouth.net", "charter.net", "cox.net", "earthlink.net", "juno.com",
+        /* British ISP domains */
+        "btinternet.com", "virginmedia.com", "blueyonder.co.uk", "freeserve.co.uk", "live.co.uk",
+        "ntlworld.com", "o2.co.uk", "orange.net", "sky.com", "talktalk.co.uk", "tiscali.co.uk",
+        "virgin.net", "wanadoo.co.uk", "bt.com",
+        /* Chinese ISP domains */
+        "sina.com", "qq.com",
+        /* French ISP domains */
+        "hotmail.fr", "live.fr", "laposte.net", "yahoo.fr", "wanadoo.fr", "orange.fr", "gmx.fr", "sfr.fr", "neuf.fr", "free.fr",
+        /* German ISP domains */
+        "gmx.de", "hotmail.de", "live.de", "online.de", "t-online.de" /* T-Mobile */, "web.de", "yahoo.de",
+        /* Russian ISP domains */
+        "mail.ru", "rambler.ru", "yandex.ru",
+        /* Belgian ISP domains */
+        "hotmail.be", "live.be", "skynet.be", "voo.be", "tvcablenet.be",
+        /* Argentinian ISP domains */
+        "hotmail.com.ar", "live.com.ar", "yahoo.com.ar", "fibertel.com.ar", "speedy.com.ar", "arnet.com.ar",
+        /* Domains used in Mexico */
+        "yahoo.com.mx", "live.com.mx", "hotmail.es", "hotmail.com.mx", "prodigy.net.mx"
+      ],
 
     //librasoft added "it" "eu"
-	defaultTopLevelDomains: ["it", "eu", "co.jp", "co.uk", "com", "net", "org", "info", "edu", "gov", "mil", "ca"],
+    defaultTopLevelDomains: ["it", "eu", "co.jp", "co.uk", "com", "net", "org", "info", "edu", "gov", "mil", "ca"],
 
   run: function(opts) {
     opts.domains = opts.domains || Mailcheck.defaultDomains;

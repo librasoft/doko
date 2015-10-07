@@ -188,7 +188,7 @@ class UsersController extends AppController
             throw new BadRequestException();
         }
 
-		if ($this->request->is(['patch', 'post', 'put'])) {
+        if ($this->request->is(['patch', 'post', 'put'])) {
             $item->password = $this->request->data['password'];
 
             if ($this->{$modelClass}->save($item)) {

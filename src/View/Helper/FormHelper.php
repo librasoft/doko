@@ -13,7 +13,7 @@ class FormHelper extends BaseFormHelper
 {
     use OptionsAwareTrait;
 
-    protected $_honeypots	= [
+    protected $_honeypots = [
         ['name' => 'full-name', 'type' => 'text'],
         ['name' => 'email-address', 'type' => 'email'],
         ['name' => 'website-url', 'type' => 'url'],
