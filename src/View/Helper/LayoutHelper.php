@@ -52,6 +52,7 @@ class LayoutHelper extends Helper
 
         if ($url_params) {
             unset($url_params['prefix']);
+            $url_params = array_filter($url_params);
 
             foreach ($url_params as $key => $value) {
                 $classes[] = strtolower('doko-' . $key[0] . '-' . str_replace('_', '-', $value));

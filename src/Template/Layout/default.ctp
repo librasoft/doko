@@ -46,7 +46,7 @@ $asset_suffix = Configure::read('debug') ? '.full' : '.min';
                     'alt' => Configure::read('Doko.Frontend.title'),
                     'width' => Configure::read('Doko.Frontend.logo-width'),
                     'height' => Configure::read('Doko.Frontend.logo-height'),
-                    'itemprop' => 'logo',
+                    'itemprop' => 'logo name',
                     'class' => 'logo-img',
                 ]) ?>
             </h1>
@@ -60,7 +60,7 @@ $asset_suffix = Configure::read('debug') ? '.full' : '.min';
     </nav>
 </header>
 
-<?php if (!$this->get('no-breadcrumbs')): ?>
+<?php if (!$this->get('skip-breadcrumbs')): ?>
 <nav class="wrapper wrapper-breadcrumbs">
     <div class="breadcrumbs">
         <h2 class="breadcrumbs-title sr-only"><?= __d('Doko', 'Navigation path') ?></h2>
@@ -91,8 +91,8 @@ $asset_suffix = Configure::read('debug') ? '.full' : '.min';
 </div>
 
 <?php
-//$footer_before = $this->Layout->blocks('footer-before');
-if (false && $footer_before):
+$footer_before = $this->Regions->display('footer-before');
+if ($footer_before):
 ?>
 <aside class="wrapper wrapper-footer-before">
     <div class="footer-before" role="complementary">
@@ -101,15 +101,18 @@ if (false && $footer_before):
 </aside>
 <?php
 endif;
-?>
 
+$footer = $this->Regions->display('footer');
+if ($footer):
+?>
 <footer class="wrapper wrapper-footer" role="contentinfo">
     <div class="footer">
-        <?php
-//        echo $this->Layout->blocks('footer');
-        ?>
+        <?= $footer ?>
     </div>
 </footer>
+<?php
+endif;
+?>
 
 <footer class="wrapper wrapper-legal" role="contentinfo">
     <div class="legal">

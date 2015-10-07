@@ -38,7 +38,7 @@ class MenuHelper extends Helper
             case 'table':
                 $menus = $this->_View->get('dokoMenus');
                 if (empty($menus[$alias])) {
-                    return;
+                    return '';
                 }
                 return $this->Layout->nestedList($this->normalize($menus[$alias]->links), $options);
 
@@ -63,7 +63,7 @@ class MenuHelper extends Helper
 				],
                 'element' => $items[$i]->element ? [
                     'name' => $items[$i]->element,
-                    'options' => $items[$i]->element_options ? json_decode($items[$i]->element_options, true) : null,
+                    'data' => $items[$i]->element_options ? json_decode($items[$i]->element_options, true) : null,
                 ] : null,
                 'acl_token' => $items[$i]->acl_token,
 				'options' => [

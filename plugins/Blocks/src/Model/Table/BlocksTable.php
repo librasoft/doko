@@ -32,15 +32,6 @@ class BlocksTable extends Table
 
         $this->addBehavior('Timestamp');
         $this->addBehavior('Tree');
-
-        $this->belongsTo('ParentBlocks', [
-            'className' => 'Blocks.Blocks',
-            'foreignKey' => 'parent_id'
-        ]);
-        $this->hasMany('ChildBlocks', [
-            'className' => 'Blocks.Blocks',
-            'foreignKey' => 'parent_id'
-        ]);
     }
 
     /**
